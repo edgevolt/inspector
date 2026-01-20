@@ -61,11 +61,30 @@ function populateLanguageSelector() {
     const languages = getAllLanguages();
     languageSelector.innerHTML = '';
 
+    // Group languages by category
+    const grouped = {};
     languages.forEach(lang => {
-        const option = document.createElement('option');
-        option.value = lang.id;
-        option.textContent = `${lang.icon} ${lang.name}`;
-        languageSelector.appendChild(option);
+        const category = lang.category || 'Other';
+        if (!grouped[category]) {
+            grouped[category] = [];
+        }
+        grouped[category].push(lang);
+    });
+
+    // Add optgroups for each category
+    Object.keys(grouped).sort().forEach(category => {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = category;
+
+        // Sort languages alphabetically within category
+        grouped[category].sort((a, b) => a.name.localeCompare(b.name)).forEach(lang => {
+            const option = document.createElement('option');
+            option.value = lang.id;
+            option.textContent = `${lang.icon} ${lang.name}`;
+            optgroup.appendChild(option);
+        });
+
+        languageSelector.appendChild(optgroup);
     });
 }
 
@@ -131,6 +150,62 @@ async function loadLanguage(langId) {
             return tokens.map(token => ({
                 ...token,
                 explanation: getExplanation(token.value, token.type)
+            }));
+        };
+    } else if (langId === 'graphql') {
+        const { parseGraphQL } = await import('./graphql-parser.js');
+        currentParser = parseGraphQL;
+    } else if (langId === 'mongodb') {
+        const { parseMongoDB } = await import('./mongodb-parser.js');
+        currentParser = parseMongoDB;
+    } else if (langId === 'elasticsearch') {
+        const { parseElasticsearch } = await import('./elasticsearch-parser.js');
+        currentParser = parseElasticsearch;
+    } else if (langId === 'odata') {
+        const { parseOData } = await import('./odata-parser.js');
+        currentParser = parseOData;
+    } else if (langId === 'cql') {
+        const { parseCQL } = await import('./cql-parser.js');
+        currentParser = parseCQL;
+    } else if (langId === 'cypher') {
+        const { parseCypher } = await import('./cypher-parser.js');
+        currentParser = parseCypher;
+    } else if (langId === 'fortios') {
+        const { tokenize, getExplanation } = await import('./languages/fortios.js');
+        currentParser = (query) => {
+            const tokens = tokenize(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' ? getExplanation(query) : null
+            }));
+        };
+    } else if (langId === 'panos') {
+        const { tokenize, getExplanation } = await import('./languages/panos.js');
+        currentParser = (query) => {
+            const tokens = tokenize(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'bash') {
+        const { parseBash } = await import('./bash-parser.js');
+        const { getExplanation } = await import('./languages/bash.js');
+        currentParser = (query) => {
+            const tokens = parseBash(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'terraform') {
+        const { parseTerraform } = await import('./terraform-parser.js');
+        const { getExplanation } = await import('./languages/terraform.js');
+        currentParser = (query) => {
+            const tokens = parseTerraform(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
             }));
         };
     } else {

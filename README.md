@@ -9,8 +9,17 @@ A minimalistic web application that explains query language statements with visu
 - 📊 **KQL** (Kusto Query Language) - Azure Data Explorer, Log Analytics
 - 🗄️ **SQL** (Structured Query Language) - Relational databases
 - 📈 **PromQL** (Prometheus Query Language) - Monitoring and metrics
-- ⚡ **PowerShell** - Task automation and configuration management
+- ⚡ **PowerShell** - Task automation and configuration management (85+ cmdlets)
+- 🔷 **GraphQL** - API query language with strong typing and introspection
+- 🍃 **MongoDB** - NoSQL database queries and aggregation pipelines
+- 🔍 **Elasticsearch** - Search and analytics (Query DSL + ES|QL)
+- 🌐 **OData** - REST API query protocol for web services
+- 🔗 **CQL** (Cassandra Query Language) - Apache Cassandra NoSQL database
+- 🕸️ **Cypher** - Neo4j graph database query language
 - 🛡️ **FortiOS** (FortiOS CLI) - FortiGate firewall commands (7.4.x+)
+- 🔥 **PAN-OS** (PAN-OS CLI) - Palo Alto Networks firewall commands
+- 💻 **Bash** - Unix shell and command language
+- 🏗️ **Terraform** - Infrastructure as Code (HashiCorp Configuration Language)
 
 ## Features
 
