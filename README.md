@@ -20,6 +20,11 @@ A minimalistic web application that explains query language statements with visu
 - 🔥 **PAN-OS** (PAN-OS CLI) - Palo Alto Networks firewall commands
 - 💻 **Bash** - Unix shell and command language
 - 🏗️ **Terraform** - Infrastructure as Code (HashiCorp Configuration Language)
+- 🔐 **QQL** (Qualys Query Language) - Qualys vulnerability management platform
+- 🔍 **SPL** (Splunk Search Processing Language) - Splunk search and analytics
+- 🛡️ **AQL** (Ariel Query Language) - IBM QRadar SIEM
+- 🎯 **EQL** (Event Query Language) - Elastic threat hunting and security analysis
+- 🔎 **OSQuery** - SQL-powered operating system instrumentation and monitoring
 
 ## Features
 

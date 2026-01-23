@@ -208,6 +208,56 @@ async function loadLanguage(langId) {
                 explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
             }));
         };
+    } else if (langId === 'qql') {
+        const { parseQQL } = await import('./qql-parser.js');
+        const { getExplanation } = await import('./languages/qql.js');
+        currentParser = (query) => {
+            const tokens = parseQQL(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'spl') {
+        const { parseSPL } = await import('./spl-parser.js');
+        const { getExplanation } = await import('./languages/spl.js');
+        currentParser = (query) => {
+            const tokens = parseSPL(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'aql') {
+        const { parseAQL } = await import('./aql-parser.js');
+        const { getExplanation } = await import('./languages/aql.js');
+        currentParser = (query) => {
+            const tokens = parseAQL(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'eql') {
+        const { parseEQL } = await import('./eql-parser.js');
+        const { getExplanation } = await import('./languages/eql.js');
+        currentParser = (query) => {
+            const tokens = parseEQL(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'osquery') {
+        const { parseOSQuery } = await import('./osquery-parser.js');
+        const { getExplanation } = await import('./languages/osquery.js');
+        currentParser = (query) => {
+            const tokens = parseOSQuery(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
     } else {
         currentParser = null;
     }

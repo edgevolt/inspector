@@ -592,6 +592,330 @@ export const languages = {
                 query: 'provider "aws" {\n  region = var.aws_region\n  profile = "default"\n}'
             }
         ]
+    },
+    qql: {
+        id: 'qql',
+        name: 'QQL',
+        fullName: 'Qualys Query Language',
+        category: 'Query Languages',
+        description: 'Query language for Qualys vulnerability management and security platform',
+        placeholder: 'asset.os ~ "Windows.*" and vuln.severity >= 4',
+        icon: '🔐',
+        module: './languages/qql.js',
+        examples: [
+            {
+                title: 'High Severity Vulnerabilities',
+                query: 'vuln.severity >= 4 and detection.status = "Active"'
+            },
+            {
+                title: 'Critical CVSS Score',
+                query: 'vuln.cvss >= 9.0 and detection.lastFound > daysAgo(30)'
+            },
+            {
+                title: 'Windows Assets with Active Detections',
+                query: 'asset.os ~ "Windows.*" and detection.status in ("Active", "New")'
+            },
+            {
+                title: 'Assets Not Scanned Recently',
+                query: 'asset.lastScanned < daysAgo(30) and asset.trackingMethod = "IP"'
+            },
+            {
+                title: 'PCI Compliance Failures',
+                query: 'compliance.framework = "PCI DSS" and compliance.status = "Fail"'
+            },
+            {
+                title: 'Cloud Assets by Provider',
+                query: 'asset.cloudProvider in ("AWS", "Azure", "GCP") and vuln.severity >= 3'
+            },
+            {
+                title: 'Expiring Certificates',
+                query: 'cert.validTo < dateAdd(today(), 30) and cert.expired = false'
+            },
+            {
+                title: 'Container Vulnerabilities',
+                query: 'container.running = true and vuln.severity = 5'
+            },
+            {
+                title: 'Web App Security Issues',
+                query: 'webapp.vulnCount > 0 and webapp.severity >= 4'
+            },
+            {
+                title: 'Missing Critical Patches',
+                query: 'patch.severity = "Critical" and patch.installed = false'
+            },
+            {
+                title: 'Private IP Assets',
+                query: 'isPrivateIP(asset.ip) = true and detection.port in (22, 3389)'
+            },
+            {
+                title: 'Detections by Date Range',
+                query: 'detection.firstFound between daysAgo(90) and daysAgo(30) and detection.status != "Fixed"'
+            },
+            {
+                title: 'AWS EC2 Instances',
+                query: 'asset.ec2.instanceId is not null and asset.ec2.instanceType ~ "t[23].*"'
+            },
+            {
+                title: 'Aggregated Severity Count',
+                query: 'count() group by vuln.severity order by vuln.severity desc'
+            }
+        ]
+    },
+    spl: {
+        id: 'spl',
+        name: 'SPL',
+        fullName: 'Splunk Search Processing Language',
+        category: 'Query Languages',
+        description: 'Search and analytics language for Splunk platform',
+        placeholder: 'index=main error | stats count by host | sort -count',
+        icon: '🔍',
+        module: './languages/spl.js',
+        examples: [
+            {
+                title: 'Basic Search with Filters',
+                query: 'index=web status>=400 | fields _time, host, status, uri'
+            },
+            {
+                title: 'Statistical Aggregation',
+                query: 'index=app | stats count, avg(response_time) by status_code'
+            },
+            {
+                title: 'Time-Series Analysis',
+                query: 'index=metrics | timechart span=5m avg(cpu_usage) by host'
+            },
+            {
+                title: 'Top Values',
+                query: 'index=access | top limit=10 user, action'
+            },
+            {
+                title: 'Transaction Analysis',
+                query: 'index=web | transaction session_id maxspan=30m | stats avg(duration)'
+            },
+            {
+                title: 'Field Extraction with Rex',
+                query: 'index=logs | rex field=_raw "user=(?<username>\\w+)" | table _time, username'
+            },
+            {
+                title: 'Subsearch',
+                query: 'index=main [search index=threats | fields malicious_ip | rename malicious_ip as src_ip]'
+            },
+            {
+                title: 'Join with Lookup',
+                query: 'index=events | lookup user_info user_id OUTPUT email, department | table user_id, email, department'
+            },
+            {
+                title: 'Multivalue Operations',
+                query: 'index=data | makemv delim="," tags | mvexpand tags | stats count by tags'
+            },
+            {
+                title: 'Eval Expressions',
+                query: 'index=sales | eval profit=revenue-cost, margin=round(profit/revenue*100, 2) | table product, profit, margin'
+            },
+            {
+                title: 'Deduplication',
+                query: 'index=events | dedup user_id, session_id | stats count'
+            },
+            {
+                title: 'Complex Filtering',
+                query: 'index=web | where status_code>=400 AND cidrmatch("10.0.0.0/8", src_ip) | stats count by status_code'
+            },
+            {
+                title: 'Event Statistics',
+                query: 'index=app | eventstats avg(response_time) as avg_response by endpoint | where response_time > avg_response*2'
+            },
+            {
+                title: 'Streaming Statistics',
+                query: 'index=logs | streamstats count as event_num, avg(bytes) as running_avg window=100'
+            }
+        ]
+    },
+    aql: {
+        id: 'aql',
+        name: 'AQL',
+        fullName: 'Ariel Query Language (IBM QRadar)',
+        category: 'Query Languages',
+        description: 'SQL-like query language for IBM QRadar SIEM',
+        placeholder: 'SELECT sourceip, destinationip, qid FROM events WHERE severity > 7 LAST 24 HOURS',
+        icon: '🛡️',
+        module: './languages/aql.js',
+        examples: [
+            {
+                title: 'High Severity Events',
+                query: 'SELECT sourceip, destinationip, qidname, magnitude FROM events WHERE severity >= 8 LAST 24 HOURS'
+            },
+            {
+                title: 'Top Source IPs',
+                query: 'SELECT sourceip, COUNT(*) as event_count FROM events GROUP BY sourceip ORDER BY event_count DESC LIMIT 10 LAST 7 DAYS'
+            },
+            {
+                title: 'Network Flow Analysis',
+                query: 'SELECT sourceip, destinationip, SUM(sourcebytes) as total_bytes FROM flows WHERE protocolid=6 GROUP BY sourceip, destinationip LAST 1 HOURS'
+            },
+            {
+                title: 'Events with CIDR Filtering',
+                query: 'SELECT sourceip, destinationip, qidname FROM events WHERE INCIDR(sourceip, \'10.0.0.0/8\') AND severity > 5 LAST 24 HOURS'
+            },
+            {
+                title: 'User Activity Tracking',
+                query: 'SELECT username, COUNT(*) as login_count, UNIQUECOUNT(sourceip) as unique_ips FROM events WHERE categoryname LIKE \'%Authentication%\' GROUP BY username LAST 7 DAYS'
+            },
+            {
+                title: 'Protocol Distribution',
+                query: 'SELECT protocol, COUNT(*) as count FROM events WHERE protocol IS NOT NULL GROUP BY protocol ORDER BY count DESC LAST 24 HOURS'
+            },
+            {
+                title: 'Time-Based Analysis',
+                query: 'SELECT DATEFORMAT(starttime, \'YYYY-MM-dd HH\') as hour, COUNT(*) as events FROM events GROUP BY hour ORDER BY hour LAST 7 DAYS'
+            },
+            {
+                title: 'Security Event Correlation',
+                query: 'SELECT sourceip, destinationip, qidname, categoryname FROM events WHERE sourceip IN (SELECT destinationip FROM events WHERE severity >= 9) LAST 24 HOURS'
+            },
+            {
+                title: 'Conditional Severity Classification',
+                query: 'SELECT qidname, CASE WHEN severity >= 8 THEN \'Critical\' WHEN severity >= 5 THEN \'High\' ELSE \'Medium\' END as risk_level FROM events LAST 24 HOURS'
+            },
+            {
+                title: 'Aggregated Statistics',
+                query: 'SELECT categoryname, COUNT(*) as total, AVG(magnitude) as avg_magnitude, MAX(severity) as max_severity FROM events GROUP BY categoryname HAVING total > 100 LAST 7 DAYS'
+            },
+            {
+                title: 'Pattern Matching',
+                query: 'SELECT sourceip, username, qidname FROM events WHERE username MATCHES \'^admin.*\' AND severity > 6 LAST 24 HOURS'
+            },
+            {
+                title: 'Log Source Analysis',
+                query: 'SELECT LOGSOURCENAME(logsourceid) as log_source, COUNT(*) as event_count FROM events GROUP BY log_source ORDER BY event_count DESC LAST 24 HOURS'
+            }
+        ]
+    },
+    eql: {
+        id: 'eql',
+        name: 'EQL',
+        fullName: 'Event Query Language (Elastic)',
+        category: 'Query Languages',
+        description: 'Event-based query language for threat hunting and security analysis',
+        placeholder: 'process where process.name == "cmd.exe" and process.parent.name == "explorer.exe"',
+        icon: '🎯',
+        module: './languages/eql.js',
+        examples: [
+            {
+                title: 'Basic Process Event',
+                query: 'process where process.name == "powershell.exe"'
+            },
+            {
+                title: 'File Creation with Extension',
+                query: 'file where event.action == "creation" and file.extension == "exe"'
+            },
+            {
+                title: 'Network Connection to Port',
+                query: 'network where destination.port == 443 and source.ip != "127.0.0.1"'
+            },
+            {
+                title: 'Process with Command Line Pattern',
+                query: 'process where stringContains(process.command_line, "invoke-expression")'
+            },
+            {
+                title: 'Sequence: Process Chain',
+                query: 'sequence by user.name [process where process.name == "cmd.exe"] [process where process.parent.name == "cmd.exe"]'
+            },
+            {
+                title: 'Sequence with Time Constraint',
+                query: 'sequence with maxspan=5m [process where process.name == "powershell.exe"] [network where destination.port == 443]'
+            },
+            {
+                title: 'Pattern Matching with Like',
+                query: 'file where file.name like "*.tmp" and file.path like "*\\\\Temp\\\\*"'
+            },
+            {
+                title: 'Regex Pattern Matching',
+                query: 'process where process.command_line regex~ ".*encoded.*command.*"'
+            },
+            {
+                title: 'CIDR Network Matching',
+                query: 'network where cidrMatch(source.ip, "10.0.0.0/8", "192.168.0.0/16")'
+            },
+            {
+                title: 'Parent-Child Process Relationship',
+                query: 'process where process.parent.name == "explorer.exe" and process.name in ("cmd.exe", "powershell.exe")'
+            },
+            {
+                title: 'With Pipe Command',
+                query: 'process where process.name == "svchost.exe" | unique process.command_line | head 10'
+            },
+            {
+                title: 'Complex Boolean Logic',
+                query: 'process where (process.name == "cmd.exe" or process.name == "powershell.exe") and not startsWith(process.executable, "C:\\\\Windows\\\\")'
+            }
+        ]
+    },
+    osquery: {
+        id: 'osquery',
+        name: 'OSQuery',
+        fullName: 'OSQuery SQL',
+        category: 'Query Languages',
+        description: 'SQL-powered operating system instrumentation and monitoring',
+        placeholder: 'SELECT pid, name, path, cmdline FROM processes WHERE name LIKE "%chrome%"',
+        icon: '🔎',
+        module: './languages/osquery.js',
+        examples: [
+            {
+                title: 'Running Processes',
+                query: 'SELECT pid, name, path, cmdline FROM processes WHERE name LIKE "%chrome%"'
+            },
+            {
+                title: 'Listening Ports',
+                query: 'SELECT pid, port, protocol, address FROM listening_ports WHERE port IN (80, 443, 8080)'
+            },
+            {
+                title: 'User Accounts',
+                query: 'SELECT username, uid, gid, shell, directory FROM users WHERE uid >= 1000'
+            },
+            {
+                title: 'File Hash Check',
+                query: 'SELECT path, md5, sha256 FROM hash WHERE path = "/bin/bash"'
+            },
+            {
+                title: 'Network Interfaces',
+                query: 'SELECT interface, address, mask, type FROM interface_addresses WHERE type = "IPv4"'
+            },
+            {
+                title: 'Installed Packages (Debian)',
+                query: 'SELECT name, version, arch FROM deb_packages WHERE name LIKE "%python%"'
+            },
+            {
+                title: 'System Information',
+                query: 'SELECT hostname, cpu_brand, physical_memory, hardware_vendor FROM system_info'
+            },
+            {
+                title: 'Startup Items',
+                query: 'SELECT name, path, source, status FROM startup_items'
+            },
+            {
+                title: 'Logged In Users',
+                query: 'SELECT user, tty, host, time FROM logged_in_users'
+            },
+            {
+                title: 'Process with Network JOIN',
+                query: 'SELECT p.pid, p.name, pos.remote_address, pos.remote_port FROM processes p JOIN process_open_sockets pos ON p.pid = pos.pid WHERE pos.remote_port = 443'
+            },
+            {
+                title: 'Certificates Expiring Soon',
+                query: 'SELECT common_name, not_valid_after, path FROM certificates WHERE CAST(not_valid_after AS INTEGER) < CAST(strftime("%s", "now", "+30 days") AS INTEGER)'
+            },
+            {
+                title: 'Docker Containers',
+                query: 'SELECT id, name, image, state, status FROM docker_containers WHERE state = "running"'
+            },
+            {
+                title: 'Suspicious Processes',
+                query: 'SELECT p.pid, p.name, p.path, p.cmdline, u.username FROM processes p JOIN users u ON p.uid = u.uid WHERE p.name IN ("nc", "ncat", "netcat") OR p.cmdline LIKE "%/dev/tcp/%"'
+            },
+            {
+                title: 'System Services (Windows)',
+                query: 'SELECT name, display_name, status, start_type, path FROM services WHERE status = "RUNNING" AND start_type = "AUTO_START"'
+            }
+        ]
     }
     // Future languages can be added here:
     // python: { ... }
