@@ -1,6 +1,6 @@
 // MongoDB Parser and Tokenizer
 
-import { getExplanation } from './languages/mongodb.js';
+import { getExplanation } from '../../knowledge/statements/mongodb.js';
 
 // Token types
 const TokenType = {

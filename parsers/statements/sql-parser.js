@@ -1,53 +1,51 @@
-// PromQL Parser and Tokenizer
+// SQL Parser and Tokenizer
 
-import { getExplanation } from './languages/promql.js';
+import { getExplanation } from '../../knowledge/statements/sql.js';
 
 // Token types
 const TokenType = {
+    CLAUSE: 'clause',
     FUNCTION: 'function',
-    AGGREGATION: 'aggregation',
     KEYWORD: 'keyword',
-    METRIC: 'metric',
-    LABEL: 'label',
+    IDENTIFIER: 'identifier',
     STRING: 'string',
     NUMBER: 'number',
     OPERATOR: 'operator',
     PUNCTUATION: 'punctuation',
-    DURATION: 'duration',
     WHITESPACE: 'whitespace'
 };
 
-// Known PromQL functions and aggregations
+// Known SQL clauses
+const CLAUSES = new Set([
+    'select', 'from', 'where', 'group', 'having', 'order', 'limit', 'offset',
+    'join', 'inner', 'left', 'right', 'full', 'outer', 'cross',
+    'insert', 'into', 'update', 'delete', 'set', 'values',
+    'create', 'alter', 'drop', 'table', 'index', 'view'
+]);
+
+// Known SQL functions
 const FUNCTIONS = new Set([
-    'rate', 'irate', 'increase', 'delta', 'deriv', 'predict_linear',
-    'histogram_quantile', 'absent', 'changes', 'resets',
-    'label_replace', 'label_join', 'vector', 'scalar',
-    'sort', 'sort_desc', 'timestamp', 'time', 'day_of_month',
-    'day_of_week', 'days_in_month', 'hour', 'minute', 'month', 'year',
-    'abs', 'ceil', 'floor', 'round', 'exp', 'ln', 'log2', 'log10', 'sqrt'
+    'count', 'sum', 'avg', 'min', 'max', 'upper', 'lower', 'now',
+    'coalesce', 'concat', 'substring', 'length', 'trim', 'round',
+    'cast', 'convert', 'date', 'year', 'month', 'day'
 ]);
 
-const AGGREGATIONS = new Set([
-    'sum', 'min', 'max', 'avg', 'count', 'stddev', 'stdvar',
-    'topk', 'bottomk', 'quantile', 'count_values', 'group'
-]);
-
-// PromQL keywords
+// Known SQL keywords
 const KEYWORDS = new Set([
-    'by', 'without', 'on', 'ignoring', 'group_left', 'group_right',
-    'bool', 'offset', 'and', 'or', 'unless'
+    'as', 'by', 'on', 'and', 'or', 'not', 'in', 'between', 'like',
+    'distinct', 'all', 'asc', 'desc', 'null', 'is', 'exists',
+    'case', 'when', 'then', 'else', 'end'
 ]);
 
-// PromQL operators
+// SQL operators
 const OPERATORS = new Set([
-    '==', '!=', '>', '<', '>=', '<=', '+', '-', '*', '/', '%', '^',
-    '=~', '!~'
+    '=', '!=', '<>', '>', '<', '>=', '<=', '+', '-', '*', '/', '%'
 ]);
 
 /**
- * Tokenizes a PromQL query string into an array of tokens
+ * Tokenizes a SQL query string into an array of tokens
  */
-export function tokenizePromQL(query) {
+export function tokenizeSQL(query) {
     const tokens = [];
     let i = 0;
 
@@ -70,14 +68,17 @@ export function tokenizePromQL(query) {
             continue;
         }
 
-        // String literals (single or double quotes)
-        if (char === '"' || char === "'") {
-            const quote = char;
-            let str = quote;
+        // String literals (single quotes in SQL)
+        if (char === "'") {
+            let str = "'";
             i++;
-            while (i < query.length && query[i] !== quote) {
+            while (i < query.length && query[i] !== "'") {
                 if (query[i] === '\\' && i + 1 < query.length) {
                     str += query[i] + query[i + 1];
+                    i += 2;
+                } else if (query[i] === "'" && i + 1 < query.length && query[i + 1] === "'") {
+                    // Handle escaped single quote ''
+                    str += "''";
                     i += 2;
                 } else {
                     str += query[i];
@@ -97,42 +98,29 @@ export function tokenizePromQL(query) {
             continue;
         }
 
-        // Numbers (including floats and scientific notation)
+        // Numbers
         if (/\d/.test(char)) {
             let num = '';
             const start = i;
-            while (i < query.length && /[\d.eE+-]/.test(query[i])) {
+            while (i < query.length && /[\d.]/.test(query[i])) {
                 num += query[i];
                 i++;
             }
-
-            // Check if followed by time unit (duration)
-            if (i < query.length && /[smhdwy]/.test(query[i])) {
-                num += query[i];
-                i++;
-                tokens.push({
-                    type: TokenType.DURATION,
-                    value: num,
-                    start: start,
-                    end: i
-                });
-            } else {
-                tokens.push({
-                    type: TokenType.NUMBER,
-                    value: num,
-                    start: start,
-                    end: i
-                });
-            }
+            tokens.push({
+                type: TokenType.NUMBER,
+                value: num,
+                start: start,
+                end: i
+            });
             continue;
         }
 
-        // Operators (including two-character operators)
-        if ('=!><+-*/%^~'.includes(char)) {
+        // Operators
+        if ('=!<>+-*/%'.includes(char)) {
             let op = char;
             i++;
             // Check for two-character operators
-            if (i < query.length && '=~'.includes(query[i])) {
+            if (i < query.length && '=><'.includes(query[i])) {
                 op += query[i];
                 i++;
             }
@@ -146,7 +134,7 @@ export function tokenizePromQL(query) {
         }
 
         // Punctuation
-        if (/[(){}\[\],]/.test(char)) {
+        if (/[(),;.]/.test(char)) {
             tokens.push({
                 type: TokenType.PUNCTUATION,
                 value: char,
@@ -157,11 +145,11 @@ export function tokenizePromQL(query) {
             continue;
         }
 
-        // Identifiers (metrics, functions, labels, keywords)
-        if (/[a-zA-Z_:]/.test(char)) {
+        // Identifiers, clauses, functions, keywords
+        if (/[a-zA-Z_]/.test(char)) {
             let word = '';
             const start = i;
-            while (i < query.length && /[a-zA-Z0-9_:]/.test(query[i])) {
+            while (i < query.length && /[a-zA-Z0-9_]/.test(query[i])) {
                 word += query[i];
                 i++;
             }
@@ -174,23 +162,15 @@ export function tokenizePromQL(query) {
             const isFunction = nextNonWhitespace < query.length && query[nextNonWhitespace] === '(';
 
             // Determine token type
-            let type = TokenType.METRIC;
+            let type = TokenType.IDENTIFIER;
             const lowerWord = word.toLowerCase();
 
-            if (AGGREGATIONS.has(lowerWord)) {
-                type = TokenType.AGGREGATION;
+            if (CLAUSES.has(lowerWord)) {
+                type = TokenType.CLAUSE;
             } else if (isFunction || FUNCTIONS.has(lowerWord)) {
                 type = TokenType.FUNCTION;
             } else if (KEYWORDS.has(lowerWord)) {
                 type = TokenType.KEYWORD;
-            } else if (word.includes(':')) {
-                // Likely a metric name (contains colon)
-                type = TokenType.METRIC;
-            } else if (tokens.length > 0 &&
-                (tokens[tokens.length - 2]?.value === '{' ||
-                    tokens[tokens.length - 2]?.value === ',')) {
-                // Inside label selector
-                type = TokenType.LABEL;
             }
 
             tokens.push({
@@ -229,11 +209,11 @@ export function enrichTokens(tokens) {
 /**
  * Main parse function
  */
-export function parsePromQL(query) {
+export function parseSQL(query) {
     if (!query || query.trim() === '') {
         return [];
     }
 
-    const tokens = tokenizePromQL(query);
+    const tokens = tokenizeSQL(query);
     return enrichTokens(tokens);
 }

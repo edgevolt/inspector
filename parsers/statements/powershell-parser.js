@@ -1,6 +1,6 @@
 // PowerShell Parser and Tokenizer
 
-import { getExplanation } from './languages/powershell.js';
+import { getExplanation } from '../../knowledge/statements/powershell.js';
 
 // Token types
 const TokenType = {

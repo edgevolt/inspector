@@ -1,7 +1,8 @@
 // Main application logic
 
-import { parseKQL } from './app.js';
+import { parseKQL } from './parsers/statements/app.js';
 import { getLanguage, getAllLanguages, getDefaultLanguage } from './languages.js';
+import { initLogMode } from './log-mode.js';
 
 // Current language state
 let currentLanguage = null;
@@ -45,6 +46,9 @@ async function init() {
 
     // Load initial language
     await loadLanguage(initialLangId);
+
+    // Initialize log mode
+    initLogMode();
 
     // Check for initial query
     const initialQuery = urlParams.get('q');
@@ -134,16 +138,16 @@ async function loadLanguage(langId) {
     if (langId === 'kql') {
         currentParser = parseKQL;
     } else if (langId === 'sql') {
-        const { parseSQL } = await import('./sql-parser.js');
+        const { parseSQL } = await import('./parsers/statements/sql-parser.js');
         currentParser = parseSQL;
     } else if (langId === 'promql') {
-        const { parsePromQL } = await import('./promql-parser.js');
+        const { parsePromQL } = await import('./parsers/statements/promql-parser.js');
         currentParser = parsePromQL;
     } else if (langId === 'powershell') {
-        const { parsePowerShell } = await import('./powershell-parser.js');
+        const { parsePowerShell } = await import('./parsers/statements/powershell-parser.js');
         currentParser = parsePowerShell;
     } else if (langId === 'fortios') {
-        const { tokenize, getExplanation } = await import('./languages/fortios.js');
+        const { tokenize, getExplanation } = await import('./knowledge/statements/fortios.js');
         // Create parser function that returns tokens with explanations
         currentParser = (query) => {
             const tokens = tokenize(query);
@@ -153,25 +157,25 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'graphql') {
-        const { parseGraphQL } = await import('./graphql-parser.js');
+        const { parseGraphQL } = await import('./parsers/statements/graphql-parser.js');
         currentParser = parseGraphQL;
     } else if (langId === 'mongodb') {
-        const { parseMongoDB } = await import('./mongodb-parser.js');
+        const { parseMongoDB } = await import('./parsers/statements/mongodb-parser.js');
         currentParser = parseMongoDB;
     } else if (langId === 'elasticsearch') {
-        const { parseElasticsearch } = await import('./elasticsearch-parser.js');
+        const { parseElasticsearch } = await import('./parsers/statements/elasticsearch-parser.js');
         currentParser = parseElasticsearch;
     } else if (langId === 'odata') {
-        const { parseOData } = await import('./odata-parser.js');
+        const { parseOData } = await import('./parsers/statements/odata-parser.js');
         currentParser = parseOData;
     } else if (langId === 'cql') {
-        const { parseCQL } = await import('./cql-parser.js');
+        const { parseCQL } = await import('./parsers/statements/cql-parser.js');
         currentParser = parseCQL;
     } else if (langId === 'cypher') {
-        const { parseCypher } = await import('./cypher-parser.js');
+        const { parseCypher } = await import('./parsers/statements/cypher-parser.js');
         currentParser = parseCypher;
     } else if (langId === 'fortios') {
-        const { tokenize, getExplanation } = await import('./languages/fortios.js');
+        const { tokenize, getExplanation } = await import('./knowledge/statements/fortios.js');
         currentParser = (query) => {
             const tokens = tokenize(query);
             return tokens.map(token => ({
@@ -180,7 +184,7 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'panos') {
-        const { tokenize, getExplanation } = await import('./languages/panos.js');
+        const { tokenize, getExplanation } = await import('./knowledge/statements/panos.js');
         currentParser = (query) => {
             const tokens = tokenize(query);
             return tokens.map(token => ({
@@ -189,8 +193,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'bash') {
-        const { parseBash } = await import('./bash-parser.js');
-        const { getExplanation } = await import('./languages/bash.js');
+        const { parseBash } = await import('./parsers/statements/bash-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/bash.js');
         currentParser = (query) => {
             const tokens = parseBash(query);
             return tokens.map(token => ({
@@ -199,8 +203,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'terraform') {
-        const { parseTerraform } = await import('./terraform-parser.js');
-        const { getExplanation } = await import('./languages/terraform.js');
+        const { parseTerraform } = await import('./parsers/statements/terraform-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/terraform.js');
         currentParser = (query) => {
             const tokens = parseTerraform(query);
             return tokens.map(token => ({
@@ -209,8 +213,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'qql') {
-        const { parseQQL } = await import('./qql-parser.js');
-        const { getExplanation } = await import('./languages/qql.js');
+        const { parseQQL } = await import('./parsers/statements/qql-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/qql.js');
         currentParser = (query) => {
             const tokens = parseQQL(query);
             return tokens.map(token => ({
@@ -219,8 +223,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'spl') {
-        const { parseSPL } = await import('./spl-parser.js');
-        const { getExplanation } = await import('./languages/spl.js');
+        const { parseSPL } = await import('./parsers/statements/spl-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/spl.js');
         currentParser = (query) => {
             const tokens = parseSPL(query);
             return tokens.map(token => ({
@@ -229,8 +233,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'aql') {
-        const { parseAQL } = await import('./aql-parser.js');
-        const { getExplanation } = await import('./languages/aql.js');
+        const { parseAQL } = await import('./parsers/statements/aql-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/aql.js');
         currentParser = (query) => {
             const tokens = parseAQL(query);
             return tokens.map(token => ({
@@ -239,8 +243,8 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'eql') {
-        const { parseEQL } = await import('./eql-parser.js');
-        const { getExplanation } = await import('./languages/eql.js');
+        const { parseEQL } = await import('./parsers/statements/eql-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/eql.js');
         currentParser = (query) => {
             const tokens = parseEQL(query);
             return tokens.map(token => ({
@@ -249,10 +253,20 @@ async function loadLanguage(langId) {
             }));
         };
     } else if (langId === 'osquery') {
-        const { parseOSQuery } = await import('./osquery-parser.js');
-        const { getExplanation } = await import('./languages/osquery.js');
+        const { parseOSQuery } = await import('./parsers/statements/osquery-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/osquery.js');
         currentParser = (query) => {
             const tokens = parseOSQuery(query);
+            return tokens.map(token => ({
+                ...token,
+                explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null
+            }));
+        };
+    } else if (langId === 'yaral') {
+        const { parseYaraL } = await import('./parsers/statements/yaral-parser.js');
+        const { getExplanation } = await import('./knowledge/statements/yaral.js');
+        currentParser = (query) => {
+            const tokens = parseYaraL(query);
             return tokens.map(token => ({
                 ...token,
                 explanation: token.type !== 'whitespace' && token.type !== 'comment' ? getExplanation(token.value, token.type) : null

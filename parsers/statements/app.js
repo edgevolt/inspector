@@ -1,6 +1,6 @@
 // KQL Parser and Tokenizer
 
-import { getExplanation } from './languages/kql.js';
+import { getExplanation } from '../../knowledge/statements/kql.js';
 
 // Token types
 const TokenType = {

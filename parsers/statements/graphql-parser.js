@@ -1,6 +1,6 @@
 // GraphQL Parser and Tokenizer
 
-import { getExplanation } from './languages/graphql.js';
+import { getExplanation } from '../../knowledge/statements/graphql.js';
 
 // Token types
 const TokenType = {

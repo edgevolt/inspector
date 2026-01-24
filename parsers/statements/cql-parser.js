@@ -1,6 +1,6 @@
 // Cassandra CQL Parser
 
-import { getExplanation } from './languages/cql.js';
+import { getExplanation } from '../../knowledge/statements/cql.js';
 
 // Token types
 const TokenType = {

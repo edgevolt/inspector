@@ -1,6 +1,6 @@
 // OData Parser - URL query string parser
 
-import { getExplanation } from './languages/odata.js';
+import { getExplanation } from '../../knowledge/statements/odata.js';
 
 // Token types
 const TokenType = {

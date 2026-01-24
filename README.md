@@ -24,7 +24,9 @@ A minimalistic web application that explains query language statements with visu
 - 🔍 **SPL** (Splunk Search Processing Language) - Splunk search and analytics
 - 🛡️ **AQL** (Ariel Query Language) - IBM QRadar SIEM
 - 🎯 **EQL** (Event Query Language) - Elastic threat hunting and security analysis
+- 🔎 **Yara-L** (Yara-L) - Google Chronicle detection rule language
 - 🔎 **OSQuery** - SQL-powered operating system instrumentation and monitoring
+
 
 ## Features
 

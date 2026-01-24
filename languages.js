@@ -9,7 +9,7 @@ export const languages = {
         description: 'Query language for Azure Data Explorer, Log Analytics, and Application Insights',
         placeholder: 'SecurityEvent | where TimeGenerated > ago(1h) | take 10',
         icon: '📊',
-        module: './languages/kql.js',
+        module: './knowledge/statements/kql.js',
         examples: [
             {
                 title: 'Recent Security Events',
@@ -45,7 +45,7 @@ export const languages = {
         description: 'Standard language for managing and querying relational databases',
         placeholder: 'SELECT name, email FROM users WHERE active = true LIMIT 10',
         icon: '🗄️',
-        module: './languages/sql.js',
+        module: './knowledge/statements/sql.js',
         examples: [
             {
                 title: 'Basic SELECT Query',
@@ -81,7 +81,7 @@ export const languages = {
         description: 'Query language for Prometheus monitoring and time series data',
         placeholder: 'rate(http_requests_total[5m])',
         icon: '📈',
-        module: './languages/promql.js',
+        module: './knowledge/statements/promql.js',
         examples: [
             {
                 title: 'Request Rate',
@@ -117,7 +117,7 @@ export const languages = {
         description: 'Task automation and configuration management (85+ cmdlets supported)',
         placeholder: 'Get-Process | Where-Object {$_.CPU -gt 10} | Select-Object Name, CPU',
         icon: '⚡',
-        module: './languages/powershell.js',
+        module: './knowledge/statements/powershell.js',
         examples: [
             {
                 title: 'Discover Commands',
@@ -161,7 +161,7 @@ export const languages = {
         description: 'API query language with strong typing and introspection',
         placeholder: 'query GetUser($id: ID!) { user(id: $id) { name email } }',
         icon: '🔷',
-        module: './languages/graphql.js',
+        module: './knowledge/statements/graphql.js',
         examples: [
             {
                 title: 'Basic Query',
@@ -205,7 +205,7 @@ export const languages = {
         description: 'NoSQL database queries and aggregation pipelines',
         placeholder: 'db.users.find({ age: { $gte: 18 } })',
         icon: '🍃',
-        module: './languages/mongodb.js',
+        module: './knowledge/statements/mongodb.js',
         examples: [
             {
                 title: 'Find with Operators',
@@ -249,7 +249,7 @@ export const languages = {
         description: 'Search and analytics engine queries (Query DSL + ES|QL)',
         placeholder: 'FROM logs-* | WHERE status == 200 | STATS avg(response_time) BY host',
         icon: '🔍',
-        module: './languages/elasticsearch.js',
+        module: './knowledge/statements/elasticsearch.js',
         examples: [
             {
                 title: 'ES|QL - Basic Query',
@@ -293,7 +293,7 @@ export const languages = {
         description: 'REST API query protocol for web services',
         placeholder: '$filter=Price gt 20 and Category eq \'Electronics\'&$orderby=Price desc&$top=10',
         icon: '🌐',
-        module: './languages/odata.js',
+        module: './knowledge/statements/odata.js',
         examples: [
             {
                 title: 'Filter and Sort',
@@ -337,7 +337,7 @@ export const languages = {
         description: 'Query language for Apache Cassandra NoSQL database',
         placeholder: 'SELECT * FROM users WHERE user_id = uuid() ALLOW FILTERING',
         icon: '🔗',
-        module: './languages/cql.js',
+        module: './knowledge/statements/cql.js',
         examples: [
             {
                 title: 'Create Keyspace',
@@ -381,7 +381,7 @@ export const languages = {
         description: 'Graph query language for Neo4j database',
         placeholder: 'MATCH (n:Person)-[:KNOWS]->(m:Person) WHERE n.age > 25 RETURN n.name, m.name',
         icon: '🕸️',
-        module: './languages/cypher.js',
+        module: './knowledge/statements/cypher.js',
         examples: [
             {
                 title: 'Basic Pattern Match',
@@ -425,7 +425,7 @@ export const languages = {
         description: 'Command-line interface for FortiGate firewalls (FortiOS 7.4.x+)',
         placeholder: 'diagnose sys session list',
         icon: '🛡️',
-        module: './languages/fortios.js',
+        module: './knowledge/statements/fortios.js',
         examples: [
             {
                 title: 'List Active Sessions',
@@ -469,7 +469,7 @@ export const languages = {
         description: 'Command-line interface for Palo Alto Networks firewalls',
         placeholder: 'show system info',
         icon: '🔥',
-        module: './languages/panos.js',
+        module: './knowledge/statements/panos.js',
         examples: [
             {
                 title: 'System Information',
@@ -513,7 +513,7 @@ export const languages = {
         description: 'Unix shell and command language',
         placeholder: 'for file in *.txt; do echo $file; done',
         icon: '💻',
-        module: './languages/bash.js',
+        module: './knowledge/statements/bash.js',
         examples: [
             {
                 title: 'For Loop',
@@ -557,7 +557,7 @@ export const languages = {
         description: 'Infrastructure as Code using HashiCorp Configuration Language',
         placeholder: 'resource "aws_instance" "web" { ami = "ami-123456" }',
         icon: '🏗️',
-        module: './languages/terraform.js',
+        module: './knowledge/statements/terraform.js',
         examples: [
             {
                 title: 'Resource Block',
@@ -601,7 +601,7 @@ export const languages = {
         description: 'Query language for Qualys vulnerability management and security platform',
         placeholder: 'asset.os ~ "Windows.*" and vuln.severity >= 4',
         icon: '🔐',
-        module: './languages/qql.js',
+        module: './knowledge/statements/qql.js',
         examples: [
             {
                 title: 'High Severity Vulnerabilities',
@@ -669,7 +669,7 @@ export const languages = {
         description: 'Search and analytics language for Splunk platform',
         placeholder: 'index=main error | stats count by host | sort -count',
         icon: '🔍',
-        module: './languages/spl.js',
+        module: './knowledge/statements/spl.js',
         examples: [
             {
                 title: 'Basic Search with Filters',
@@ -737,7 +737,7 @@ export const languages = {
         description: 'SQL-like query language for IBM QRadar SIEM',
         placeholder: 'SELECT sourceip, destinationip, qid FROM events WHERE severity > 7 LAST 24 HOURS',
         icon: '🛡️',
-        module: './languages/aql.js',
+        module: './knowledge/statements/aql.js',
         examples: [
             {
                 title: 'High Severity Events',
@@ -797,7 +797,7 @@ export const languages = {
         description: 'Event-based query language for threat hunting and security analysis',
         placeholder: 'process where process.name == "cmd.exe" and process.parent.name == "explorer.exe"',
         icon: '🎯',
-        module: './languages/eql.js',
+        module: './knowledge/statements/eql.js',
         examples: [
             {
                 title: 'Basic Process Event',
@@ -857,7 +857,7 @@ export const languages = {
         description: 'SQL-powered operating system instrumentation and monitoring',
         placeholder: 'SELECT pid, name, path, cmdline FROM processes WHERE name LIKE "%chrome%"',
         icon: '🔎',
-        module: './languages/osquery.js',
+        module: './knowledge/statements/osquery.js',
         examples: [
             {
                 title: 'Running Processes',
@@ -914,6 +914,74 @@ export const languages = {
             {
                 title: 'System Services (Windows)',
                 query: 'SELECT name, display_name, status, start_type, path FROM services WHERE status = "RUNNING" AND start_type = "AUTO_START"'
+            }
+        ]
+    },
+    yaral: {
+        id: 'yaral',
+        name: 'Yara-L',
+        fullName: 'Yara-L (Google Chronicle)',
+        category: 'Query Languages',
+        description: 'Detection rule language for Google Chronicle SIEM',
+        placeholder: 'rule suspicious_powershell { events: $e.metadata.event_type = "PROCESS_LAUNCH" ... }',
+        icon: '🔎',
+        module: './knowledge/statements/yaral.js',
+        examples: [
+            {
+                title: 'Basic Process Detection',
+                query: 'rule suspicious_powershell {\n  meta:\n    author = "Security Team"\n    severity = "High"\n  events:\n    $e.metadata.event_type = "PROCESS_LAUNCH"\n    $e.principal.process.file.full_path = /.*powershell.exe/\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'Network Connection to Suspicious Port',
+                query: 'rule suspicious_network_connection {\n  meta:\n    description = "Detects connections to uncommon ports"\n  events:\n    $e.metadata.event_type = "NETWORK_CONNECTION"\n    $e.target.port in [4444, 5555, 6666]\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'File Creation in Temp Directory',
+                query: 'rule file_in_temp {\n  events:\n    $e.metadata.event_type = "FILE_CREATION"\n    strings.icontains($e.target.file.full_path, "\\\\temp\\\\")\n    strings.ends_with($e.target.file.full_path, ".exe")\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'Multi-Event Correlation',
+                query: 'rule process_then_network {\n  events:\n    $e1.metadata.event_type = "PROCESS_LAUNCH"\n    $e2.metadata.event_type = "NETWORK_CONNECTION"\n  match:\n    $e1.principal.hostname = $e2.principal.hostname\n  condition:\n    $e1 and $e2\n}'
+            },
+            {
+                title: 'String Functions',
+                query: 'rule command_line_obfuscation {\n  events:\n    $e.metadata.event_type = "PROCESS_LAUNCH"\n    strings.contains($e.principal.process.command_line, "invoke-expression")\n    or strings.length($e.principal.process.command_line) > 1000\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'CIDR Network Range',
+                query: 'rule internal_to_external {\n  events:\n    $e.metadata.event_type = "NETWORK_CONNECTION"\n    net.ip_in_range_cidr($e.principal.ip, "10.0.0.0/8")\n    net.is_external_ip($e.target.ip)\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'Registry Modification',
+                query: 'rule registry_persistence {\n  meta:\n    mitre_attack_tactic = "Persistence"\n  events:\n    $e.metadata.event_type = "REGISTRY_MODIFICATION"\n    $e.target.registry.registry_key = /.*\\\\CurrentVersion\\\\Run.*/\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'Event Count Threshold',
+                query: 'rule multiple_failed_logins {\n  events:\n    $e.metadata.event_type = "USER_LOGIN"\n    $e.security_result.action = "BLOCK"\n  condition:\n    #e > 5\n}'
+            },
+            {
+                title: 'Regex Pattern Matching',
+                query: 'rule encoded_command {\n  events:\n    $e.metadata.event_type = "PROCESS_LAUNCH"\n    re.regex($e.principal.process.command_line, `.*-enc.*[A-Za-z0-9+/=]{50,}.*`)\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'UDM Field References',
+                query: 'rule suspicious_user_agent {\n  events:\n    $e.metadata.event_type = "NETWORK_HTTP"\n    $e.network.http.user_agent = /.*curl.*|.*wget.*/\n    $e.network.http.method = "POST"\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'Outcome with Risk Score',
+                query: 'rule high_risk_activity {\n  events:\n    $e.metadata.event_type = "PROCESS_LAUNCH"\n    $e.principal.user.userid = "admin"\n  condition:\n    $e\n  outcome:\n    $risk_score = 85\n    $severity = "High"\n    $alert_name = "Admin Process Launch"\n}'
+            },
+            {
+                title: 'Multiple Event Types',
+                query: 'rule lateral_movement {\n  events:\n    ($e.metadata.event_type = "NETWORK_CONNECTION" and $e.target.port = 445)\n    or ($e.metadata.event_type = "PROCESS_LAUNCH" and $e.principal.process.file.full_path = /.*psexec.*/)\n  condition:\n    $e\n}'
+            },
+            {
+                title: 'String Concatenation',
+                query: 'rule custom_alert {\n  events:\n    $e.metadata.event_type = "USER_LOGIN"\n  condition:\n    $e\n  outcome:\n    $alert_description = strings.concat("Login from ", $e.principal.hostname, " by ", $e.principal.user.userid)\n}'
+            },
+            {
+                title: 'Time-Based Detection',
+                query: 'rule off_hours_activity {\n  events:\n    $e.metadata.event_type = "USER_LOGIN"\n    timestamp.get_hour($e.metadata.event_timestamp) < 6\n    or timestamp.get_hour($e.metadata.event_timestamp) > 22\n  condition:\n    $e\n}'
             }
         ]
     }
