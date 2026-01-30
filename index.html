@@ -118,6 +118,51 @@
         <div id="parsed-fields-container" class="parsed-fields-container"></div>
       </section>
 
+      <!-- Color Legend -->
+      <section class="log-color-legend">
+        <details>
+          <summary class="legend-title">🎨 Field Category Colors</summary>
+          <div class="legend-content">
+            <div class="legend-item">
+              <span class="legend-color" style="background: #3b82f6;"></span>
+              <span class="legend-label"><strong>Blue</strong> - Source information (IP, port, zone, user, device)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #10b981;"></span>
+              <span class="legend-label"><strong>Green</strong> - Destination information (IP, port, zone, user, device)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #ef4444;"></span>
+              <span class="legend-label"><strong>Red</strong> - Security & threats (malware, attacks, severity)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #f59e0b;"></span>
+              <span class="legend-label"><strong>Orange</strong> - Actions & policy (allow, deny, rule names)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #8b5cf6;"></span>
+              <span class="legend-label"><strong>Purple</strong> - Policy & rules (policy ID, rule UUID)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #06b6d4;"></span>
+              <span class="legend-label"><strong>Cyan</strong> - Timestamps (receive time, generated time)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #84cc16;"></span>
+              <span class="legend-label"><strong>Lime</strong> - Protocol & network (TCP, UDP, ports, flags)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #ec4899;"></span>
+              <span class="legend-label"><strong>Pink</strong> - Traffic statistics (bytes, packets, duration)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background: #6b7280;"></span>
+              <span class="legend-label"><strong>Gray</strong> - General fields (device name, application, other)</span>
+            </div>
+          </div>
+        </details>
+      </section>
+
       <section class="log-statistics-section" style="display: none;">
         <h3 class="input-label">Statistics:</h3>
         <div id="log-statistics-container" class="log-statistics-container"></div>

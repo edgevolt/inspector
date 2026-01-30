@@ -7,9 +7,9 @@
 export const logFormats = {
     fortinet: {
         id: 'fortinet',
-        name: 'FortiGate',
+        name: 'FortiGate (FortiOS 7.x)',
         emoji: '🔥',
-        description: 'Fortinet FortiGate firewall logs',
+        description: 'Fortinet FortiGate firewall logs (FortiOS 7.x)',
         examples: [
             {
                 title: 'Traffic Allow',
@@ -30,6 +30,38 @@ export const logFormats = {
             {
                 title: 'VPN Connection',
                 log: 'date=2024-01-23 time=15:00:00 devname="FG-01" devid="FG100E4Q17001234" logid="0101037127" type="event" subtype="vpn" level="information" vd="root" eventtime=1706026200 logdesc="SSL VPN tunnel up" action="tunnel-up" tunneltype="ssl-tunnel" tunnelid=1234567890 remip=203.0.113.200 user="john.doe" group="VPN-Users" dst_host="N/A" reason="N/A" msg="SSL tunnel established"'
+            }
+        ]
+    },
+    paloalto: {
+        id: 'paloalto',
+        name: 'Palo Alto (PAN-OS 11.x)',
+        emoji: '🔶',
+        description: 'Palo Alto Networks firewall logs (PAN-OS 11.x)',
+        examples: [
+            {
+                title: 'Traffic Allow',
+                log: ',2024/01/29 14:30:15,007951000012345,TRAFFIC,end,,2024/01/29 14:30:14,192.168.1.100,8.8.8.8,0.0.0.0,0.0.0.0,Allow-Internet,,,web-browsing,vsys1,trust,untrust,ethernet1/1,ethernet1/2,Log-Forwarding,,54321,1,54321,53,0,0,0x0,udp,allow,1024,512,512,10,2024/01/29 14:29:00,120,general-internet,,12345,0x8000000000000000,United States,United States,,5,5,aged-out,0,0,0,0,,PA-5220,from-policy,,,0,,0,,,,,,,,,,,00:11:22:33:44:55,00:50:56:ab:cd:ef,,,,,,,,,,,,,,,,,,,,,0,2024/01/29 14:30:15.123456,,,internet-utility,general-internet,browser-based'
+            },
+            {
+                title: 'Traffic Deny',
+                log: ',2024/01/29 14:35:22,007951000012345,TRAFFIC,drop,,2024/01/29 14:35:21,10.0.0.50,192.168.100.1,0.0.0.0,0.0.0.0,Block-Malicious,,,ms-rdp,vsys1,trust,untrust,ethernet1/1,ethernet1/2,Log-Forwarding,,12345,1,49152,3389,0,0,0x0,tcp,deny,0,0,0,1,2024/01/29 14:35:21,0,business-systems,,12346,0x0,Reserved,Reserved,,0,0,policy-deny,0,0,0,0,,PA-5220,from-policy,,,0,,0,,,,,,,,,,,aa:bb:cc:dd:ee:ff,ff:ee:dd:cc:bb:aa,,,,,,,,,,,,,,,,,,,,,0,2024/01/29 14:35:22.456789,,,remote-access,business-systems,client-server'
+            },
+            {
+                title: 'Threat - Spyware',
+                log: ',2024/01/29 14:40:10,007951000012345,THREAT,spyware,,2024/01/29 14:40:09,192.168.1.105,203.0.113.50,0.0.0.0,0.0.0.0,Security-Policy,domain\\user1,,web-browsing,vsys1,trust,untrust,ethernet1/1,ethernet1/2,Log-Forwarding,,12347,1,49152,80,0,0,0x0,tcp,alert,http://malicious.example.com/c2,Zeus Trojan C2 Traffic,spyware,critical,client-to-server,12348,0x8000000000000000,United States,Reserved,,any,0,1234567890abcdef,,,Mozilla/5.0 (Windows NT 10.0; Win64; x64),PE,192.168.1.105,,,,,0,0,0,0,,PA-5220,,,,GET,0,,0,0,,30000,command-and-control,8675-7890,,0,0,,malware,0,0x0,,Computer,Windows-Workstation,Dell Latitude 5420,Dell,Windows,Windows 10,DESKTOP-ABC123,00:11:22:33:44:55,Server,Linux-Server,Dell PowerEdge R740,Dell,Linux,CentOS 8,webserver01,00:50:56:ab:cd:ef,,,,,,,,,0,2024/01/29 14:40:10.789012,,'
+            },
+            {
+                title: 'Threat - Virus',
+                log: ',2024/01/29 14:45:33,007951000012345,THREAT,virus,,2024/01/29 14:45:32,192.168.1.110,203.0.113.75,0.0.0.0,0.0.0.0,Security-Policy,domain\\user2,,ssl,vsys1,trust,untrust,ethernet1/1,ethernet1/2,Log-Forwarding,,12349,1,54321,443,0,0,0x0,tcp,alert,https://download.example.com/file.exe,Ransomware.Generic,virus,high,client-to-server,12350,0x8000000000000000,United States,Reserved,,PE,0,a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef1234567890,,,Mozilla/5.0 (Windows NT 10.0; Win64; x64),PE,192.168.1.110,https://google.com,,,,,0,0,0,0,,PA-5220,,,,GET,0,,0,0,,52020,malware,8675-7890,,0,0,,malware,0,0x0,,Computer,Windows-Workstation,HP EliteBook 840,HP,Windows,Windows 11,LAPTOP-XYZ789,aa:bb:cc:dd:ee:ff,Server,Windows Server,Dell PowerEdge R640,Dell,Windows Server,Windows Server 2019,fileserver01,ff:ee:dd:cc:bb:aa,,,,,,,,,0,2024/01/29 14:45:33.234567,,'
+            },
+            {
+                title: 'Threat - URL Filtering',
+                log: ',2024/01/29 14:50:00,007951000012345,THREAT,url,,2024/01/29 14:49:59,192.168.1.115,203.0.113.100,0.0.0.0,0.0.0.0,Security-Policy,domain\\user3,,web-browsing,vsys1,trust,untrust,ethernet1/1,ethernet1/2,Log-Forwarding,,12351,1,49200,80,0,0,0x0,tcp,alert,http://phishing.example.com/login,Phishing URL,url,medium,client-to-server,12352,0x8000000000000000,United States,Reserved,,text/html,0,,,0,Mozilla/5.0 (Windows NT 10.0; Win64; x64),HTML,192.168.1.115,https://email.example.com,,,,,0,0,0,0,,PA-5220,,,,GET,0,,0,0,,86001,phishing,8675-7890,,0,0,,phishing,0,0x0,,Computer,Windows-Workstation,Lenovo ThinkPad X1,Lenovo,Windows,Windows 10,WORKSTATION-001,11:22:33:44:55:66,Server,Linux-Server,Apache Web Server,Apache,Linux,Ubuntu 20.04,phishing-site,66:55:44:33:22:11,,,,,,,,,0,2024/01/29 14:50:00.567890,,'
+            },
+            {
+                title: 'Threat - Vulnerability',
+                log: ',2024/01/29 14:55:15,007951000012345,THREAT,vulnerability,,2024/01/29 14:55:14,203.0.113.200,192.168.1.50,0.0.0.0,0.0.0.0,Security-Policy,,,web-browsing,vsys1,untrust,dmz,ethernet1/2,ethernet1/3,Log-Forwarding,,12353,1,12345,8080,0,0,0x0,tcp,alert,http://webapp.example.com/admin,SQL Injection Attempt,vulnerability,critical,client-to-server,12354,0x8000000000000000,Reserved,United States,,text/html,0,,,0,sqlmap/1.5,HTML,203.0.113.200,,,,,,,0,0,0,0,,PA-5220,,,,POST,0,,0,0,,40000,code-execution,8675-7890,,0,0,,sql-injection,0,0x0,,,,,,,,,,,Server,Linux-Server,Nginx Web Server,Nginx,Linux,Ubuntu 22.04,webapp01,77:88:99:aa:bb:cc,,,,,,,,,0,2024/01/29 14:55:15.890123,,'
             }
         ]
     }

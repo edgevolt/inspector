@@ -858,15 +858,27 @@ body {
 }
 
 .field-category-timestamp .field-indicator {
-  background: #6b7280;
+  background: #06b6d4;
 }
 
 .field-category-protocol .field-indicator {
-  background: #ec4899;
+  background: #84cc16;
 }
 
 .field-category-traffic .field-indicator {
-  background: #06b6d4;
+  background: #ec4899;
+}
+
+.field-category-application .field-indicator {
+  background: #6b7280;
+}
+
+.field-category-session .field-indicator {
+  background: #6b7280;
+}
+
+.field-category-device .field-indicator {
+  background: #6b7280;
 }
 
 .field-category-security .field-indicator {

@@ -1,6 +1,7 @@
 /**
- * FortiGate Log Field Knowledge Base
+ * FortiGate Log Field Knowledge Base (FortiOS 7.x)
  * Comprehensive definitions for FortiGate firewall log fields
+ * Supports FortiOS 7.x log formats
  * Categories: timestamp, source, destination, action, policy, protocol, traffic, security
  */
 

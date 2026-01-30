@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-01-29
+
+### Added
+- **Palo Alto Networks Log Parser (PAN-OS 11.x)** - Comprehensive firewall log parsing support
+  - **100+ Field Definitions** - Extensive coverage of Traffic and Threat log fields
+  - **Traffic Logs** - Support for 108 fields including:
+    - Network flow data (source/destination IP, ports, zones, interfaces)
+    - NAT translation information
+    - Policy and rule matching
+    - Application identification (App-ID with category/subcategory/technology)
+    - Traffic statistics (bytes, packets - total/sent/received)
+    - Session tracking (ID, duration, end reason)
+    - Geographic location (source/dest country)
+    - Device context (IoT Security integration - 16 fields per direction)
+    - SD-WAN metrics (cluster, site, link switches)
+    - Container/Kubernetes context (pod name, namespace, container ID)
+  - **Threat Logs** - Support for 93 fields including:
+    - All Traffic log fields plus threat-specific data
+    - Threat identification (name, ID, category, severity)
+    - URL and web filtering
+    - File analysis (hash, type, WildFire report ID)
+    - HTTP details (method, headers, user agent, referer)
+    - Email fields (sender, subject, recipient)
+  - **CSV Parsing** - Robust parser with escape sequence handling
+  - **Auto-Detection** - Automatically identifies Palo Alto CSV log format
+  - **6 Example Logs** - Traffic (allow/deny), Threat (spyware, virus, URL filtering, vulnerability)
+- **Version Designations** - Added major version numbers to log parser names
+  - FortiGate parser now shows "FortiGate (FortiOS 7.x)"
+  - Palo Alto parser shows "Palo Alto (PAN-OS 11.x)"
+  - Clear indication of supported log format versions
+- **Color Legend for Log Mode** - Interactive guide explaining field category colors
+  - Collapsible legend showing 9 color categories
+  - Blue (source), Green (destination), Red (security), Orange (action)
+  - Purple (policy), Cyan (timestamp), Lime (protocol), Pink (traffic), Gray (general)
+  - Consistent with Regex Mode's color guide design
+
+### Changed
+- Updated README to reflect new Palo Alto support and version designations
+- Updated architecture documentation to show 2 log parsers and 2 knowledge bases
+
 ## [2.1.0] - 2026-01-27
 
 ### Added

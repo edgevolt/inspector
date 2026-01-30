@@ -1,6 +1,7 @@
 /**
- * FortiGate Log Parser
+ * FortiGate Log Parser (FortiOS 7.x)
  * Parses FortiGate firewall logs in key=value format
+ * Supports FortiOS 7.x log formats
  */
 
 /**

@@ -1,6 +1,6 @@
 # Inspector
 
-**Version 2.1.0**
+**Version 2.2.0**
 
 A minimalistic web application that explains query language statements, parses log entries, and helps you understand regular expressions with visual indicators and interactive info panels. Supports 20 query languages, firewall/server log formats, and comprehensive regex pattern analysis with an extensible architecture.
 
@@ -39,11 +39,15 @@ Analyze and understand query language statements with interactive parsing and de
 Parse and explain firewall and server log entries with field-by-field breakdowns.
 
 #### Supported Log Formats
-- 🔥 **FortiGate** - Fortinet FortiGate firewall logs (80+ field definitions)
+- 🔥 **FortiGate (FortiOS 7.x)** - Fortinet FortiGate firewall logs (80+ field definitions)
   - Traffic logs (allow/deny)
   - UTM logs (virus, IPS, application control)
   - VPN connection logs
   - Security event logs
+- 🔶 **Palo Alto (PAN-OS 11.x)** - Palo Alto Networks firewall logs (100+ field definitions)
+  - Traffic logs (allow/deny/drop)
+  - Threat logs (spyware, virus, vulnerability, URL filtering)
+  - Advanced features (SD-WAN, containers, IoT device context)
 
 ### 🔤 Regex Mode
 Build, test, and understand regular expressions with interactive pattern breakdown and live testing.
@@ -153,15 +157,17 @@ query-inspector/
 │   │   ├── sql-parser.js
 │   │   ├── yaral-parser.js
 │   │   └── ...
-│   └── logs/              # Log parsers (1 file)
-│       └── fortinet.js    # FortiGate parser
+│   └── logs/              # Log parsers (2 files)
+│       ├── fortinet.js    # FortiGate parser
+│       └── paloalto.js    # Palo Alto parser
 └── knowledge/
     ├── statements/        # Query/shell knowledge bases (20 files)
     │   ├── kql.js
     │   ├── sql.js
     │   └── ...
-    └── logs/             # Log knowledge bases (1 file)
-        └── fortinet.js   # FortiGate field definitions
+    └── logs/             # Log knowledge bases (2 files)
+        ├── fortinet.js   # FortiGate field definitions
+        └── paloalto.js   # Palo Alto field definitions
 ```
 
 ### How It Works
