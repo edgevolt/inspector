@@ -1,8 +1,8 @@
 # Inspector
 
-**Version 2.3.3**
+**Version 2.3.5**
 
-A minimalistic web application that explains query language statements, parses log entries, analyzes email headers, and helps you understand regular expressions with visual indicators and interactive info panels. Supports 20 query languages, 13 log formats (9 firewall + 4 identity/IAM), SMTP email headers with routing visualization, and comprehensive regex pattern analysis with an extensible architecture.
+A minimalistic web application that explains query language statements, parses log entries, analyzes email headers, and helps you understand regular expressions with visual indicators and interactive info panels. Supports 20 query languages, 20 log formats (7 endpoint/EDR + 9 firewall + 4 identity/IAM), SMTP email headers with routing visualization, and comprehensive regex pattern analysis with an extensible architecture.
 
 **Live at**: [explain.getstat.dev](https://explain.getstat.dev)
 
@@ -39,11 +39,17 @@ Analyze and understand query language statements with interactive parsing and de
 Parse and explain firewall and server log entries with field-by-field breakdowns.
 
 #### Supported Log Formats
-- 🐟 **Barracuda CloudGen Firewall (8.x/9.x)** - Barracuda Networks CloudGen/NG firewall logs (110+ field definitions)
-- 🔷 **Check Point (R81.x)** - Check Point firewall logs (80+ field definitions)
-- 🛡️ **Cisco Firepower (FTD 6.x/7.x)** - Cisco Firepower Threat Defense syslog logs (120+ field definitions)
-- 🔥 **FortiGate (FortiOS 7.x)** - Fortinet FortiGate firewall logs (80+ field definitions)
-- 🌲 **Juniper SRX (Junos OS 12.x/15.x+)** - Juniper Networks SRX firewall logs (100+ field definitions)
+
+**🖥️ Endpoint Security**
+- 🧠 **Palo Alto Cortex XDR** - XDR endpoint and network logs (JSON / XQL Event Format) (100+ field definitions)
+- 🦅 **CrowdStrike Falcon** - FDR / Streaming API logs — process, network, DNS, and detections (JSON) (100+ field definitions)
+- 🛡️ **Microsoft Defender for Endpoint** - Advanced Hunting / Streaming API logs (JSON) (150+ field definitions)
+- 🟣 **SentinelOne (Singularity)** - Deep Visibility and Threat telemetry (JSON) (100+ field definitions)
+- 🛡️ **Sophos Intercept X / Central** - Threats, Intercept X behavior, and network activity (JSON) (100+ field definitions)
+- 🔵 **Broadcom / Symantec SEP** - Endpoint Protection logs — Risk, Firewall/Traffic, System, SONAR, and App Control (JSON) (80+ field definitions)
+- 🟥 **Trend Micro Vision One / Apex One** - XDR endpoint activity and threat telemetry (JSON) (100+ field definitions)
+
+**🔐 Identity & Access**
 - 🔑 **Microsoft Entra ID** - Sign-in, audit, provisioning, and risk detection logs (120+ field definitions)
   - Sign-in logs (success/failure, MFA, Conditional Access)
   - Audit logs (user/group/app management)
@@ -59,6 +65,13 @@ Parse and explain firewall and server log entries with field-by-field breakdowns
   - User lifecycle (create, update, delete, enable/disable)
   - MFA events (enrollment, challenge, factor management)
   - Risk evaluation (predictors, scores, policy decisions)
+
+**🧱 Firewall & Network**
+- 🐟 **Barracuda CloudGen Firewall (8.x/9.x)** - Barracuda Networks CloudGen/NG firewall logs (110+ field definitions)
+- 🔷 **Check Point (R81.x)** - Check Point firewall logs (80+ field definitions)
+- 🛡️ **Cisco Firepower (FTD 6.x/7.x)** - Cisco Firepower Threat Defense syslog logs (120+ field definitions)
+- 🔥 **FortiGate (FortiOS 7.x)** - Fortinet FortiGate firewall logs (80+ field definitions)
+- 🌲 **Juniper SRX (Junos OS 12.x/15.x+)** - Juniper Networks SRX firewall logs (100+ field definitions)
 - 🔶 **Palo Alto (PAN-OS 11.x)** - Palo Alto Networks firewall logs (100+ field definitions)
 - 🔶 **SonicWall (SonicOS 6.5/7.x)** - SonicWall firewall Enhanced Syslog format (90+ field definitions)
 - 🔷 **Ubiquiti UniFi/EdgeRouter (UniFi OS)** - Ubiquiti UniFi and EdgeRouter logs (80+ field definitions)
@@ -182,17 +195,24 @@ query-inspector/
 │   │   ├── sql-parser.js
 │   │   ├── yaral-parser.js
 │   │   └── ...
-│   └── logs/              # Log parsers (13 files)
+│   └── logs/              # Log parsers (20 files)
 │       ├── barracuda.js   # Barracuda CloudGen parser
 │       ├── checkpoint.js  # Check Point parser
+│       ├── cortex-xdr.js  # Palo Alto Cortex XDR parser (JSON)
+│       ├── crowdstrike.js # CrowdStrike Falcon parser (JSON)
 │       ├── entra-id.js    # Microsoft Entra ID parser (JSON)
 │       ├── firepower.js   # Cisco Firepower parser
 │       ├── fortinet.js    # FortiGate parser
 │       ├── juniper.js     # Juniper SRX parser
+│       ├── microsoft-defender.js # Microsoft Defender parser (JSON)
 │       ├── okta.js        # Okta System Log parser (JSON)
 │       ├── paloalto.js    # Palo Alto parser
 │       ├── ping-identity.js # Ping Identity parser (JSON)
+│       ├── sentinelone.js # SentinelOne parser (JSON)
 │       ├── sonicwall.js   # SonicWall parser
+│       ├── sophos.js      # Sophos Intercept X parser (JSON)
+│       ├── symantec.js    # Broadcom / Symantec SEP parser (JSON)
+│       ├── trendmicro.js  # Trend Micro Vision One parser (JSON)
 │       ├── ubiquiti.js    # Ubiquiti UniFi parser
 │       └── watchguard.js  # WatchGuard Firebox parser
 └── knowledge/
@@ -200,17 +220,24 @@ query-inspector/
     │   ├── kql.js
     │   ├── sql.js
     │   └── ...
-    └── logs/             # Log knowledge bases (13 files)
+    └── logs/             # Log knowledge bases (20 files)
         ├── barracuda.js   # Barracuda field definitions
         ├── checkpoint.js  # Check Point field definitions
+        ├── cortex-xdr.js  # Cortex XDR field definitions
+        ├── crowdstrike.js # CrowdStrike Falcon field definitions
         ├── entra-id.js    # Microsoft Entra ID field definitions
         ├── firepower.js   # Cisco Firepower field definitions
         ├── fortinet.js    # FortiGate field definitions
         ├── juniper.js     # Juniper SRX field definitions
+        ├── microsoft-defender.js # Microsoft Defender field definitions
         ├── okta.js        # Okta field definitions
         ├── paloalto.js    # Palo Alto field definitions
         ├── ping-identity.js # Ping Identity field definitions
+        ├── sentinelone.js # SentinelOne field definitions
         ├── sonicwall.js   # SonicWall field definitions
+        ├── sophos.js      # Sophos Intercept X field definitions
+        ├── symantec.js    # Broadcom / Symantec SEP field definitions
+        ├── trendmicro.js  # Trend Micro Vision One field definitions
         ├── ubiquiti.js    # Ubiquiti UniFi field definitions
         └── watchguard.js  # WatchGuard Firebox field definitions
 ```

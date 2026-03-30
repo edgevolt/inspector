@@ -86,6 +86,7 @@ function populateLogFormatSelector() {
     // Define category groups with display labels
     const categoryGroups = {
         identity: { label: '🔐 Identity & Access', formats: [] },
+        endpoint: { label: '🖥️ Endpoint Security', formats: [] },
         firewall: { label: '🧱 Firewall & Network', formats: [] }
     };
 
@@ -104,8 +105,8 @@ function populateLogFormatSelector() {
         group.formats.sort((a, b) => a.name.localeCompare(b.name));
     });
 
-    // Render optgroup elements (identity first, then firewall)
-    const groupOrder = ['identity', 'firewall'];
+    // Render optgroup elements (identity first, then endpoint, then firewall)
+    const groupOrder = ['identity', 'endpoint', 'firewall'];
     for (const catKey of groupOrder) {
         const group = categoryGroups[catKey];
         if (group.formats.length === 0) continue;

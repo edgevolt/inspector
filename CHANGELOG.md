@@ -7,6 +7,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.5] - 2026-03-30
+
+### Added
+- **Broadcom / Symantec Endpoint Protection (SEP) Log Parser** - Comprehensive JSON-based parsing for Symantec Endpoint Protection and EDR logs
+  - **Risk / Threat Detection Logs** - Antivirus, SONAR, and advanced machine learning detection events with full risk classification and action details
+  - **Firewall / Traffic Logs** - Network traffic events with local/remote IP, port, protocol, direction, and rule attribution
+  - **SONAR / Behavior Logs** - Behavior-based detection events with Category_Type, Detection_Score, and caller process chain
+  - **System Logs** - SEPM management events including definition updates, policy changes, and agent health
+  - **Application / Rule Events** - Application control and rule-based block/allow events
+  - **80+ Field Definitions** - Comprehensive knowledge base covering Core Identifiers, Endpoint Metadata, SEPM Management, User/Identity, Process/Application, File Activity/Hashes, Network/Firewall, and Security Detections
+  - **JSON Parsing Engine** - Robust JSON flattening (dot-notation keys), context-aware array summarization, event sub-type auto-classification (`detectLogSubType`), and malformed JSON recovery
+  - **Auto-Detection** - Three-tier heuristic detection keyed on SEP-specific fields: `Host_Name`/`Risk_Name`/`Log_Type` + `Local_Host_IP`/`Risk_Type`/`Event_ID` with SONAR/App Control fallbacks (`Category_Type`+`Detection_Score`, `Actual_Action`+`Severity_Level`)
+  - **4 Example Logs** - Risk / Threat Detection, Firewall / Traffic Block, SONAR / Behavior Detection, System Event
+- **CrowdStrike Falcon Log Parser** - Comprehensive JSON-based parsing for CrowdStrike Falcon logs (FDR / Streaming API)
+  - **Process Logs** - Execution events with command lines, hashes, integrity levels, and parent-child relationships
+  - **Network Logs** - Connection events with source/destination IPs, ports, and protocols
+  - **DNS Logs** - DNS request events with queried domains
+  - **Detection Logs** - Security alerts and IOAs with severity, tactics, techniques, and objectives
+  - **100+ Field Definitions** - Comprehensive knowledge base covering core identifiers, process, network, file, registry, and detection fields
+  - **JSON Parsing Engine** - Leverages robust JSON flattening to handle deep structures and auto-detects subtypes
+  - **Auto-Detection** - Automatically identifies CrowdStrike JSON logs based on `aid`/`SensorId` and `EventName`/`event_simpleName` fields
+  - **4 Example Logs** - Process Execution, Network Connection, DNS Request, Detection / Threat
+- **Microsoft Defender for Endpoint Log Parser** - Comprehensive JSON-based parsing for Microsoft Defender logs (Advanced Hunting / Streaming API)
+  - **DeviceProcessEvents** - Process creation logs containing full context including InitiatingProcess, ParentProcess, and command lines
+  - **DeviceNetworkEvents** - Network connection events with Local and Remote IP/Port data, NetworkProtocol, and RemoteUrl
+  - **DeviceFileEvents** - File creation/modification events containing origin tracking, SHA1/SHA256/MD5 hashes, and FileSize properties
+  - **AlertEvents** - Detailed security alerts with title, severity, category, detection source, and AttackTechniques mapping
+  - **150+ Field Definitions** - Unprecedented scale of field definitions covering Device, File, Network, Process, Registry, Logon, Identity, and Alerts
+  - **JSON Parsing Engine** - Auto-detects table schemas like `DeviceLogonEvents` based on field fingerprints if `TableName` is absent
+  - **Auto-Detection** - Seamlessly captures Microsoft Defender JSON inputs based on key attributes such as `DeviceId`, `ActionType`, and `InitiatingProcessCommandLine`
+  - **4 Example Logs** - Process Creation, Connection Success, File Creation, Security Alert
+- **SentinelOne Singularity Log Parser** - Comprehensive JSON-based parsing for SentinelOne logs (Deep Visibility / Threats)
+  - **Process Logs** - Execution events tracking ProcessIntegrityLevel, ProcessCmd, and StorylineId grouping
+  - **Network Logs** - TCP/UDP connection tracking with logical separation of local/remote contexts
+  - **DNS Logs** - Deep visibility into queried domains mapping to TrueContext execution paths
+  - **Detections & Incidents** - EDR security detections with ThreatName, Classification, AnalystVerdict, and MitigationStatus
+  - **100+ Field Definitions** - Substantial mappings connecting all primary SIEM dimensions in the SentinelOne JSON export format
+  - **JSON Parsing Engine** - Applies custom auto-detection for SentinelOne subtypes (e.g. `Incident`, `Process`, `Network`) and cleanly unnests the data hierarchy
+  - **Auto-Detection** - Built-in identification of SentinelOne payloads based on uniqueness vectors such as `AgentId`, `StorylineId`, and `ThreatName`
+  - **4 Example Logs** - Process Creation, Network Activity, DNS Request, Incident / Threat Detection
+- **Palo Alto Cortex XDR Log Parser** - Comprehensive JSON-based parsing for Cortex XDR endpoint and network logs (XQL / JSON export APIs)
+  - **Process Logs** - Execution events parsing both the initiating `actor_process` context and target `action_process` data
+  - **Network Logs** - Deep inspection of network connection activity resolving local and remote IPs alongside protocol and application logic
+  - **File Logs** - File creation/modification extraction holding contextual metadata such as sizes, hashes, and extensions
+  - **Incidents & Alerts** - Comprehensive tracking of Cortex incidents mapping alert severity, resolution tracking, and module-level attribution
+  - **100+ Field Definitions** - Voluminous knowledge base definitions covering every major dimension from Palo Alto Networks' event structures
+  - **JSON Parsing Engine** - Intelligently discerns complex event structures returning streamlined properties and subtypes like `PROCESS`, `NETWORK`, and `INCIDENT / ALERT`
+  - **Auto-Detection** - Built-in identification logic for Cortex logs utilizing common `agent_id`, `actor_process_image_name`, and `event_type` signatures
+  - **4 Example Logs** - Process Execution, Network Activity, File Activity, Security Alert / Incident
+- **Sophos Endpoint Log Parser** - Comprehensive JSON-based parsing for Sophos Intercept X and Sophos Central logs
+  - **Process Logs** - Process creation events extracting `cmd_line`, `parent_cmd_line`, `pid`, and process `sha256` details
+  - **Network Logs** - Deep visibility network telemetry parsing local and remote connection mappings alongside domain references
+  - **File Logs** - File tracking resolving attributes like size, creation timing, and target paths
+  - **Incidents & Alerts** - Sophos Central alerts containing high-level mitigation analysis natively extracting `threatType`, `mitigation_action`, and `severity`
+  - **100+ Field Definitions** - Substantial dictionary addressing the full array of variables available within Sophos Live Discover JSON exports
+  - **JSON Parsing Engine** - Sophos-specific subtype classification branching schemas out automatically into Threat, Registry, Process, File, and Network
+  - **Auto-Detection** - Fully native auto-identification of Sophos payloads via common indicators like `endpoint_id`, `customer_id`, and `mitigation_action`
+  - **4 Example Logs** - Malware Detection, Network Activity, Process Creation, Web Control Violation
+- **Trend Micro Endpoint Log Parser** - Comprehensive JSON-based parsing for Trend Micro Vision One and Apex One telemetry
+  - **Process Logs** - Deep process execution trees mapped closely capturing `processCmd`, `processFileHashSha256`, and complete parent associations
+  - **Network Logs** - Telemetry parsing focused on `connectionDirection`, protocols, and routing targets like `requestUrl` and `dstIp`
+  - **File Logs** - File drop/modification extraction capturing `objectFilePath`, `objectFileHashSha1`, and sizes
+  - **Incidents & Alerts** - Event definitions tuned to capture Trend Micro `threatName`, `riskLevel`, `actionResult`, and specific `ruleId` mappings
+  - **100+ Field Definitions** - Robust knowledge base capturing all prime values exported via Vision One's XDR search and sensor pipelines
+  - **JSON Parsing Engine** - Applies parsing techniques leveraging native fields like `logType` to subclass formats to Process, File, Registry, Network, and Threat automatically
+  - **Auto-Detection** - Native identification vector based on Trend Micro indicators including `endpointGuid`, `logId`, and `eventSubId`
+  - **4 Example Logs** - Process Activity, Network Activity, File Activity, Security Alert / Malware Detection
+
+### Fixed
+- **Endpoint Security dropdown category** - The Log Mode format selector was missing the `endpoint` category group entirely. All EDR vendors (CrowdStrike, SentinelOne, Microsoft Defender, Cortex XDR, Sophos, Trend Micro, and Symantec SEP) were silently falling into the 🧱 Firewall & Network group. They now correctly appear under their own **🖥️ Endpoint Security** optgroup, displayed between Identity & Access and Firewall & Network
+
 ## [2.3.3] - 2026-03-07
 
 ### Added

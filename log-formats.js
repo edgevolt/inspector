@@ -4,6 +4,81 @@
  * Similar to languages.js but for log parsers
  */
 export const logFormats = {
+    'microsoft-defender': {
+        id: 'microsoft-defender',
+        name: 'Microsoft Defender for Endpoint',
+        emoji: '🛡️',
+        description: 'Microsoft Defender for Endpoint logs (Advanced Hunting/Streaming API) — processes, network, files, and alerts (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'DeviceProcessEvents (Process Creation)',
+                log: '{"Timestamp":"2026-03-07T14:30:00Z","DeviceId":"12345678abcdef9012345678abcdef9012345678","DeviceName":"desktop-abc1234","ActionType":"ProcessCreated","FileName":"powershell.exe","FolderPath":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","SHA1":"da39a3ee5e6b4b0d3255bfef95601890afd80709","SHA256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","MD5":"d41d8cd98f00b204e9800998ecf8427e","ProcessId":8192,"CommandLine":"powershell.exe -ExecutionPolicy Bypass -encodedCommand IAA=","ProcessCreationTime":"2026-03-07T14:30:00Z","AccountDomain":"CONTOSO","AccountName":"jsmith","AccountSid":"S-1-5-21-3623811015-3361044348-30300820-1013","InitiatingProcessAccountDomain":"CONTOSO","InitiatingProcessAccountName":"jsmith","InitiatingProcessAccountSid":"S-1-5-21-3623811015-3361044348-30300820-1013","InitiatingProcessCommandLine":"cmd.exe /c start script.bat","InitiatingProcessCreationTime":"2026-03-07T14:28:00Z","InitiatingProcessFileName":"cmd.exe","InitiatingProcessFolderPath":"C:\\\\Windows\\\\System32\\\\cmd.exe","InitiatingProcessId":4096,"InitiatingProcessParentFileName":"explorer.exe","InitiatingProcessParentId":1024}'
+            },
+            {
+                title: 'DeviceNetworkEvents (Connection Success)',
+                log: '{"Timestamp":"2026-03-07T14:31:00Z","DeviceId":"12345678abcdef9012345678abcdef9012345678","DeviceName":"desktop-abc1234","ActionType":"ConnectionSuccess","RemoteIP":"203.0.113.100","RemotePort":443,"RemoteUrl":"api.example.com","LocalIP":"192.168.1.50","LocalPort":54321,"Protocol":"Tcp","LocalIPType":"Private","RemoteIPType":"Public","InitiatingProcessAccountDomain":"CONTOSO","InitiatingProcessAccountName":"jsmith","InitiatingProcessCommandLine":"\\"C:\\\\Program Files\\\\Mozilla Firefox\\\\firefox.exe\\"","InitiatingProcessFileName":"firefox.exe","InitiatingProcessFolderPath":"C:\\\\Program Files\\\\Mozilla Firefox\\\\firefox.exe","InitiatingProcessId":8192}'
+            },
+            {
+                title: 'DeviceFileEvents (File Creation)',
+                log: '{"Timestamp":"2026-03-07T14:32:00Z","DeviceId":"12345678abcdef9012345678abcdef9012345678","DeviceName":"desktop-abc1234","ActionType":"FileCreated","FileName":"malware.exe","FolderPath":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\malware.exe","SHA1":"da39a3ee5e6b4b0d3255bfef95601890afd80709","SHA256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","MD5":"d41d8cd98f00b204e9800998ecf8427e","FileSize":1048576,"FileOriginUrl":"http://malicious.example.com/payload.exe","FileOriginIP":"198.51.100.44","InitiatingProcessAccountDomain":"CONTOSO","InitiatingProcessAccountName":"jsmith","InitiatingProcessCommandLine":"\\"C:\\\\Program Files\\\\Mozilla Firefox\\\\firefox.exe\\"","InitiatingProcessFileName":"firefox.exe","InitiatingProcessId":8192}'
+            },
+            {
+                title: 'AlertEvents (Security Alert)',
+                log: '{"Timestamp":"2026-03-07T14:35:00Z","AlertId":"da39a3ee5e6b4b0d3255bfef95601890afd80709-123456","Title":"Suspicious PowerShell command line","Severity":"High","Category":"Execution","DetectionSource":"Microsoft Defender for Endpoint","ProviderAlertId":"12345678-abcd-1234-abcd-12345678abcd","Description":"A suspicious PowerShell command line was executed by a user.","RecommendedActions":"Isolate the machine and review the executed command line.","AttackTechniques":["T1059.001"],"DeviceId":"12345678abcdef9012345678abcdef9012345678","DeviceName":"desktop-abc1234"}'
+            }
+        ]
+    },
+    'cortex-xdr': {
+        id: 'cortex-xdr',
+        name: 'Palo Alto Cortex XDR',
+        emoji: '🧠',
+        description: 'Palo Alto Cortex XDR endpoint and network logs (JSON / XQL Event Format)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Process Execution (PROCESS_START)',
+                log: '{"event_timestamp":1706540000000,"insert_timestamp":"2026-03-07T14:30:15.123Z","event_id":"12345678-ABCD-9012-3456-7890ABCDEF12","event_type":"PROCESS","event_sub_type":"PROCESS_START","agent_id":"A1B2C3D4E5F67890A1B2C3D4E5F67890","agent_hostname":"DESKTOP-ABC123","agent_os_type":"Windows","agent_version":"8.2.0.1234","user_name":"jsmith","user_domain":"CONTOSO","actor_process_image_path":"C:\\\\Windows\\\\System32\\\\cmd.exe","actor_process_image_name":"cmd.exe","actor_process_command_line":"cmd.exe /c start script.bat","actor_process_os_pid":4096,"actor_process_signature_status":"SIGNED_VALID","actor_process_image_sha256":"d41d8cd98f00b204e9800998ecf8427e","action_process_image_path":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","action_process_image_name":"powershell.exe","action_process_command_line":"powershell.exe -ExecutionPolicy Bypass -encodedCommand IAA=","action_process_os_pid":8192,"action_process_signature_status":"SIGNED_VALID","action_process_image_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}'
+            },
+            {
+                title: 'Network Activity (NETWORK_CONNECTION)',
+                log: '{"event_timestamp":1706540060000,"event_id":"A1B2C3D4-E89A-407B-8A52-AE547F187C22","event_type":"NETWORK","event_sub_type":"NETWORK_CONNECTION","agent_id":"A1B2C3D4E5F67890A1B2C3D4E5F67890","agent_hostname":"DESKTOP-ABC123","actor_process_image_name":"firefox.exe","actor_process_os_pid":5432,"action_local_ip":"192.168.1.50","action_local_port":54321,"action_remote_ip":"203.0.113.100","action_remote_port":443,"action_network_protocol":"TCP","action_country":"US","action_dst_host":"api.example.com"}'
+            },
+            {
+                title: 'File Activity (FILE_CREATE)',
+                log: '{"event_timestamp":1706540120000,"event_id":"F9E8D7C6-B5A4-407B-8A52-AE547F187C33","event_type":"FILE","event_sub_type":"FILE_CREATE","agent_id":"A1B2C3D4E5F67890A1B2C3D4E5F67890","agent_hostname":"DESKTOP-ABC123","actor_process_image_name":"chrome.exe","actor_process_os_pid":6789,"action_file_path":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\payload.exe","action_file_name":"payload.exe","action_file_extension":"exe","action_file_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","action_file_size":1048576}'
+            },
+            {
+                title: 'Security Alert / Incident',
+                log: '{"event_timestamp":1706540500000,"alert_id":"12345678-ABCD-1234","incident_id":"INC-1234","alert_name":"Suspicious PowerShell command execution","alert_description":"A PowerShell script was executed with an obfuscated base64 command line.","alert_category":"Execution","alert_severity":"High","alert_source":"XDR Agent","mitigation_status":"Blocked","resolution_status":"Under Investigation","module_id":"Behavioral Threat Protection (BTP)","agent_id":"A1B2C3D4E5F67890A1B2C3D4E5F67890","agent_hostname":"DESKTOP-ABC123","user_name":"jsmith","action_process_image_name":"powershell.exe","action_process_image_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","xdr_url":"https://tenant.xdr.paloaltonetworks.com/app/investigate/incident/INC-1234"}'
+            }
+        ]
+    },
+    crowdstrike: {
+        id: 'crowdstrike',
+        name: 'CrowdStrike Falcon',
+        emoji: '🦅',
+        description: 'CrowdStrike Falcon logs (FDR / Streaming API) — processes, network, and detections (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Process Execution',
+                log: '{"aid":"0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d","aip":"198.51.100.22","ComputerName":"DESKTOP-ABC123","EventName":"ProcessRollup2","timestamp":"1706540000000","UserName":"jsmith","ProcessId":"4096","ParentProcessId":"1024","ImageFileName":"\\\\Device\\\\HarddiskVolume1\\\\Windows\\\\System32\\\\cmd.exe","CommandLine":"\\"C:\\\\Windows\\\\System32\\\\cmd.exe\\" /c echo hello","ParentImageFileName":"\\\\Device\\\\HarddiskVolume1\\\\Windows\\\\explorer.exe","ProcessStartTime":"1706540000000","IntegrityLevel":"8192","MD5String":"d41d8cd98f00b204e9800998ecf8427e","SHA256String":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","event_timestamp":"2026-03-07T14:30:00Z"}'
+            },
+            {
+                title: 'Network Connection',
+                log: '{"aid":"0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d","aip":"198.51.100.22","ComputerName":"DESKTOP-ABC123","EventName":"NetworkConnectIP4","timestamp":"1706540050000","UserName":"jsmith","ProcessId":"8192","ImageFileName":"\\\\Device\\\\HarddiskVolume1\\\\Program Files\\\\Mozilla Firefox\\\\firefox.exe","LocalAddressIP4":"192.168.1.50","LocalPort":"54321","RemoteAddressIP4":"203.0.113.100","RemotePort":"443","Protocol":"6","NetworkProtocol":"TCP","ConnectionDirection":"1","event_timestamp":"2026-03-07T14:30:50Z"}'
+            },
+            {
+                title: 'DNS Request',
+                log: '{"aid":"0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d","aip":"198.51.100.22","ComputerName":"DESKTOP-ABC123","EventName":"DnsRequest","timestamp":"1706540100000","UserName":"jsmith","ProcessId":"8192","DomainName":"malicious.example.com","DnsQueryType":"1","event_timestamp":"2026-03-07T14:31:00Z"}'
+            },
+            {
+                title: 'Detection / Threat',
+                log: '{"aid":"0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d","aip":"198.51.100.22","ComputerName":"DESKTOP-ABC123","EventName":"DetectionSummaryEvent","timestamp":"1706540200000","UserName":"jsmith","DetectName":"Suspicious PowerShell Download","DetectDescription":"A suspicious script download was initiated via PowerShell to an unknown domain.","Severity":"70","SeverityName":"High","Tactic":"Execution","Technique":"T1059.001","Objective":"Execution","PatternDispositionDescription":"Process Blocked","Action":"Block","event_timestamp":"2026-03-07T14:32:00Z"}'
+            }
+        ]
+    },
     'entra-id': {
         id: 'entra-id',
         name: 'Microsoft Entra ID',
@@ -285,6 +360,31 @@ export const logFormats = {
             }
         ]
     },
+    sentinelone: {
+        id: 'sentinelone',
+        name: 'SentinelOne (Singularity)',
+        emoji: '🟣',
+        description: 'SentinelOne Singularity EDR logs — Deep Visibility and Threat telemetry (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Process Creation (Deep Visibility)',
+                log: '{"AgentId":"123456789012345678","ComputerName":"DESKTOP-ABC123","EndpointName":"DESKTOP-ABC123","SiteId":"112233445566778899","SiteName":"US West Coast - Execs","EventType":"Process Creation","EventTimestamp":"2026-03-07T14:30:00.000Z","ProcessName":"powershell.exe","ProcessImagePath":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","ProcessCmd":"powershell.exe -ExecutionPolicy Bypass -encodedCommand IAA=","ProcessId":"8192","ProcessUserName":"jsmith","ProcessIntegrityLevel":"Medium","ProcessIsRoot":false,"ParentProcessName":"cmd.exe","ParentProcessId":"1024","ParentProcessImagePath":"C:\\\\Windows\\\\System32\\\\cmd.exe","Sha1":"da39a3ee5e6b4b0d3255bfef95601890afd80709","Sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","StorylineId":"D38F2B1C-E89A-407B-8A52-AE547F187C11","OsType":"Windows","AgentVersion":"23.2.3.358"}'
+            },
+            {
+                title: 'Network Activity (Deep Visibility)',
+                log: '{"AgentId":"123456789012345678","ComputerName":"DESKTOP-ABC123","EndpointName":"DESKTOP-ABC123","EventType":"Network","EventTimestamp":"2026-03-07T14:31:00.000Z","ProcessName":"firefox.exe","ProcessId":"5432","SrcIp":"192.168.1.50","SrcPort":"54321","DstIp":"203.0.113.100","DstPort":"443","TransportProtocol":"TCP","NetDirection":"Outbound","Url":"http://api.example.com","StorylineId":"A1B2C3D4-E89A-407B-8A52-AE547F187C22"}'
+            },
+            {
+                title: 'DNS Request (Deep Visibility)',
+                log: '{"AgentId":"123456789012345678","ComputerName":"DESKTOP-ABC123","EndpointName":"DESKTOP-ABC123","EventType":"DNS","EventTimestamp":"2026-03-07T14:32:00.000Z","ProcessName":"chrome.exe","ProcessId":"6789","DnsRequest":"malicious.example.com","DnsResponse":"198.51.100.44","IsLocalNet":false,"StorylineId":"F9E8D7C6-B5A4-407B-8A52-AE547F187C33"}'
+            },
+            {
+                title: 'Incident / Threat Detection',
+                log: '{"AgentId":"123456789012345678","ComputerName":"DESKTOP-ABC123","EndpointName":"DESKTOP-ABC123","CreatedAt":"2026-03-07T14:35:00.123Z","ThreatId":"TID-12345678-ABCD-1234","ThreatName":"Malware.Generic","Classification":"Malware","MitigationStatus":"Pending","ThreatMitigationStatus":"Suspicious","AnalystVerdict":"Undefined","ConfidenceLevel":"Malicious","InitiatedBy":"Agent Policy","ProcessName":"malware.exe","Sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","StorylineId":"D38F2B1C-E89A-407B-8A52-AE547F187C11"}'
+            }
+        ]
+    },
     sonicwall: {
         id: 'sonicwall',
         name: 'SonicWall (SonicOS 6.5/7.x)',
@@ -311,6 +411,81 @@ export const logFormats = {
             {
                 title: 'Port Scan Detected',
                 log: 'id=firewall sn=C0EAE4ABCDEF time="2024-01-29 15:00:00" fw=10.0.0.1 pri=1 c=32 m=83 msg="Probable port scan detected" n=2 src=10.0.0.3:443:X1 dst=172.16.194.2:47379:X0 srcMac=00:00:5E:00:53:ff dstMac=00:00:5E:00:53:00 proto=tcp/6 fw_action=drop Category="Network Detection" catid=82 note="TCP scanned port list, 14551, 61968, 53577, 27976, 29050, 25330, 21761, 23903, 7412, 47379" geoSrc=US geoDst=US'
+            }
+        ]
+    },
+    sophos: {
+        id: 'sophos',
+        name: 'Sophos Intercept X / Central',
+        emoji: '🛡️',
+        description: 'Sophos Endpoint logs — Threats, Intercept X behavior, and Network activity (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Malware Detection (Alert / Threat)',
+                log: '{"id":"12345678-ABCD-9012-3456-7890ABCDEF12","customer_id":"xyz123","severity":"high","created_at":"2026-03-07T14:30:15.123Z","when":1706540000000,"type":"Event::Endpoint::Threat::Detected","name":"Malware detected: Troj/Ransom-A","group":"MALWARE","description":"A malicious file was blocked from executing.","endpoint_id":"A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890","endpoint_type":"computer","host":"DESKTOP-ABC123","platform":"win","user":"jsmith","user_domain":"CONTOSO","source_info_ip":"192.168.1.50","threat":"Troj/Ransom-A","threatType":"malware","threat_source":"Sophos Intercept X","path":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\malware.exe","sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","mitigation_action":"Cleaned"}'
+            },
+            {
+                title: 'Network Activity (Live Discover)',
+                log: '{"endpoint_id":"A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890","host":"DESKTOP-ABC123","event_type":"Network","when":1706540060000,"process_name":"firefox.exe","pid":5432,"local_ip":"192.168.1.50","local_port":54321,"remote_ip":"203.0.113.100","remote_port":443,"protocol":"TCP","direction":"outbound","url":"http://api.example.com","domain":"api.example.com","user":"jsmith","app_name":"Mozilla Firefox"}'
+            },
+            {
+                title: 'Process Creation (Live Discover)',
+                log: '{"endpoint_id":"A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890","host":"DESKTOP-ABC123","event_type":"Process","event_sub_type":"Creation","when":1706540120000,"process_name":"powershell.exe","process_path":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","cmd_line":"powershell.exe -ExecutionPolicy Bypass -encodedCommand IAA=","pid":8192,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","parent_name":"cmd.exe","parent_pid":1024,"parent_cmd_line":"cmd.exe /c start script.bat","user":"jsmith"}'
+            },
+            {
+                title: 'Incident / Web Control',
+                log: '{"id":"F9E8D7C6-B5A4-407B-8A52-AE547F187C33","customer_id":"xyz123","severity":"medium","created_at":"2026-03-07T14:35:00.123Z","when":1706540500000,"type":"Event::Endpoint::WebControlViolation","name":"Web Control Violation","group":"WEB_CONTROL","description":"User bypassed the web filter warning.","endpoint_id":"A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890","host":"DESKTOP-ABC123","user":"jsmith","url":"http://malicious.example.com/payload.exe","web_property":"Malware","action":"Warned"}'
+            }
+        ]
+    },
+    symantec: {
+        id: 'symantec',
+        name: 'Broadcom / Symantec SEP',
+        emoji: '🔵',
+        description: 'Broadcom Symantec Endpoint Protection (SEP) logs — Risk, Firewall/Traffic, System, SONAR, and Application Control events (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Risk / Threat Detection',
+                log: '{"Log_Type":"Risk","Event_Time":"2026-03-07T14:30:00Z","Event_ID":"1234567890ABCDEF","Severity":"Critical","Severity_Level":"5","Action":"Quarantined","Actual_Action":"Quarantined","Host_Name":"DESKTOP-ABC123","Local_Host_IP":"192.168.1.50","User_Name":"jsmith","User_Domain":"CONTOSO","Domain_Name":"Default","Group_Name":"My Company\\\\Workstations\\\\Laptops","Server_Name":"SEPM-SERVER-01","Risk_Name":"Trojan.Gen.SMH","Risk_Type":"Virus","File_Path":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\payload.exe","File_Name":"payload.exe","SHA256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","Detection_Score":"98","Application_Name":"chrome.exe","Application_Path":"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe","OS_Name":"Windows 10","OS_Version":"10.0.19045"}'
+            },
+            {
+                title: 'Firewall / Traffic Block',
+                log: '{"Log_Type":"Traffic","Event_Time":"2026-03-07T14:31:00Z","Event_ID":"ABCDEF1234567890","Severity":"Info","Action":"Blocked","Host_Name":"DESKTOP-ABC123","Local_Host_IP":"192.168.1.50","Local_IP":"192.168.1.50","Local_Port":"54321","Remote_IP":"203.0.113.100","Remote_Port":"443","Protocol":"TCP","Direction":"Outbound","Remote_Host_Name":"malicious.example.com","Rule_Name":"Block all outgoing FTP to the Internet","User_Name":"jsmith","Application_Name":"powershell.exe","Application_Path":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","OS_Name":"Windows 10"}'
+            },
+            {
+                title: 'SONAR / Behavior Detection',
+                log: '{"Event_Time":"2026-03-07T14:32:00Z","Event_ID":"FEDCBA0987654321","Event_Type":"Behavior","Severity":"Major","Action":"Blocked","Sub_Action":"Process Terminated","Host_Name":"SRV-SQL-01","Local_Host_IP":"10.0.0.5","User_Name":"SYSTEM","Domain_Name":"Finance_Domain","Category_Type":"SONAR","Category_Description":"System Infected: Trojan.Gen Activity","Application_Name":"wscript.exe","Application_Path":"C:\\\\Windows\\\\System32\\\\wscript.exe","Caller_Process_Name":"cmd.exe","Caller_Process_Path":"C:\\\\Windows\\\\System32\\\\cmd.exe","Detection_Score":"100","SHA256":"a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef1234567890"}'
+            },
+            {
+                title: 'System Event',
+                log: '{"Log_Type":"System","Event_Time":"2026-03-07T14:35:00Z","Event_ID":"SYS-001","Severity":"Info","Event_Desc":"Definitions updated successfully","Host_Name":"DESKTOP-ABC123","Computer_Name":"DESKTOP-ABC123","Local_Host_IP":"192.168.1.50","Server_Name":"SEPM-SERVER-01","Site_Name":"Primary_Site","Group_Name":"My Company\\\\Workstations","OS_Name":"Windows 10","OS_Version":"10.0.19045"}'
+            }
+        ]
+    },
+    trendmicro: {
+        id: 'trendmicro',
+        name: 'Trend Micro Vision One / Apex One',
+        emoji: '🟥',
+        description: 'Trend Micro Vision One / Apex One XDR logs — Endpoint activity and Threat telemetry (JSON)',
+        category: 'endpoint',
+        examples: [
+            {
+                title: 'Process Activity (PROCESS)',
+                log: '{"uuid":"12345678-ABCD-9012-3456-7890ABCDEF12","logId":"L-123456789","eventTime":1706540000000,"eventTimeDT":"2026-03-07T14:30:00.0000000Z","logType":"PROCESS","eventSubId":"1","endpointHostName":"DESKTOP-ABC123","endpointIp":"192.168.1.50","osName":"Windows","endpointGuid":"A1B2C3D4-E5F6-7890-A1B2-C3D4E5F67890","logonUser":"jsmith","logonDomain":"CONTOSO","processName":"powershell.exe","processFilePath":"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe","processCmd":"powershell.exe -ExecutionPolicy Bypass -encodedCommand IAA=","processId":"8192","processFileHashSha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","parentProcessName":"cmd.exe","parentProcessFilePath":"C:\\\\Windows\\\\System32\\\\cmd.exe","parentProcessCmd":"cmd.exe /c start script.bat","parentProcessId":"1024","productCode":"xdr"}'
+            },
+            {
+                title: 'Network Activity (NETWORK)',
+                log: '{"uuid":"F9E8D7C6-B5A4-407B-8A52-AE547F187C33","eventTime":1706540060000,"logType":"NETWORK","eventSubId":"5","endpointHostName":"DESKTOP-ABC123","endpointIp":"192.168.1.50","processName":"firefox.exe","processId":"5432","srcIp":"192.168.1.50","srcPort":"54321","dstIp":"203.0.113.100","dstPort":"443","protocol":"TCP","connectionDirection":"Outbound","requestUrl":"http://api.example.com","requestDomain":"api.example.com","logonUser":"jsmith","productCode":"xdr"}'
+            },
+            {
+                title: 'File Activity (FILE)',
+                log: '{"uuid":"A1B2C3D4-E89A-407B-8A52-AE547F187C22","eventTime":1706540120000,"logType":"FILE","eventSubId":"10","endpointHostName":"DESKTOP-ABC123","processName":"chrome.exe","objectFilePath":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\payload.exe","objectFileName":"payload.exe","objectFileExtension":"exe","objectFileHashSha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","objectFileSize":1048576,"logonUser":"jsmith","productCode":"xdr"}'
+            },
+            {
+                title: 'Security Alert / Malware Detection',
+                log: '{"uuid":"ABCDEF12-3456-7890-ABCD-EF1234567890","eventTime":1706540500000,"logType":"THREAT","endpointHostName":"DESKTOP-ABC123","endpointIp":"192.168.1.50","threatName":"Ransom.Win32.WannaCry","threatType":"Malware","riskLevel":"Critical","action":"Block","actionResult":"Success","ruleId":"RULE-100456","processName":"malware.exe","objectFilePath":"C:\\\\Users\\\\jsmith\\\\Downloads\\\\malware.exe","objectFileHashSha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","logonUser":"jsmith","productCode":"sao"}'
             }
         ]
     },
@@ -407,6 +582,54 @@ export function autoDetectLogFormat(logText) {
 
     // Microsoft Entra ID detection - JSON-based logs with Entra-specific fields
     if (text.startsWith('{') || text.startsWith('[')) {
+        // Microsoft Defender for Endpoint detection
+        if (text.includes('"DeviceId"') || text.includes('"InitiatingProcessCommandLine"') || text.includes('"ActionType"')) {
+            if (text.includes('"Timestamp"') || text.includes('"TimeGenerated"')) {
+                return 'microsoft-defender';
+            }
+        }
+        // SentinelOne detection
+        if (text.includes('"AgentId"') || text.includes('"StorylineId"') || text.includes('"SiteId"')) {
+            if (text.includes('"EventType"') || text.includes('"ThreatName"') || text.includes('"AgentVersion"')) {
+                return 'sentinelone';
+            }
+        }
+        // Palo Alto Cortex XDR detection
+        if (text.includes('"agent_id"') || text.includes('"actor_process_image_name"') || text.includes('"action_remote_ip"')) {
+            if (text.includes('"event_type"') || text.includes('"alert_name"') || text.includes('"incident_id"')) {
+                return 'cortex-xdr';
+            }
+        }
+        // Sophos detection
+        if (text.includes('"endpoint_id"') || text.includes('"customer_id"')) {
+            if (text.includes('"threat"') || text.includes('"Event::Endpoint"') || text.includes('"process_name"')) {
+                return 'sophos';
+            }
+        }
+        // Symantec / Broadcom SEP detection — key on SEP-specific field names
+        if (text.includes('"Host_Name"') || text.includes('"Risk_Name"') || text.includes('"Log_Type"')) {
+            if (text.includes('"Local_Host_IP"') || text.includes('"Risk_Type"') || text.includes('"Event_ID"')) {
+                return 'symantec';
+            }
+        }
+        // Symantec fallback — SONAR / Application Control events
+        if (text.includes('"Category_Type"') && text.includes('"Detection_Score"')) {
+            return 'symantec';
+        }
+        if (text.includes('"Actual_Action"') && text.includes('"Severity_Level"')) {
+            return 'symantec';
+        }
+        // Trend Micro detection
+        if (text.includes('"endpointGuid"') || text.includes('"endpointHostName"') || text.includes('"logId"')) {
+            if (text.includes('"logType"') || text.includes('"eventSubId"') || text.includes('"processFileHashSha256"')) {
+                return 'trendmicro';
+            }
+        }
+        // CrowdStrike Falcon detection — look for specific identifier combinations like aid/SensorId + EventName/event_simpleName
+        if ((text.includes('"aid"') || text.includes('"SensorId"')) && 
+            (text.includes('"EventName"') || text.includes('"event_simpleName"') || text.includes('"aip"') || text.includes('"ComputerName"'))) {
+            return 'crowdstrike';
+        }
         // Sign-In log detection
         if (text.includes('"userPrincipalName"') && text.includes('"appDisplayName"')) {
             return 'entra-id';
